@@ -1,0 +1,402 @@
+[
+    {
+        "Vulnerability": "Cisco NX-OS Software DHCPv6 Relay Agent Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco NX-OS Software Python Sandbox Escape Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco NX-OS Software Command Injection Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco NX-OS Software Bash Arbitrary Code Execution and Privilege Escalation Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Application Policy Infrastructure Controller Privilege Escalation Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Application Policy Infrastructure Controller Unauthorized Policy Actions Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "cURL and libcurl  Vulnerability Affecting Cisco Products: October 2023",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine REST API Blind SQL Injection Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Unified Communications Manager Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Remote Unauthenticated Code Execution Vulnerability in OpenSSH Server (regreSSHion): July 2024",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Sensitive Information Disclosure Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Cross-Site Request Forgery Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Unified Communications Manager Cross-Site Scripting Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "RADIUS Protocol Spoofing Vulnerability (Blast-RADIUS): July 2024",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Secure Web Appliance Content Encoding Filter Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Small Business SPA300 Series and SPA500 Series IP Phones Web UI Vulnerabilities",
+        "Severity": "Critical"
+    },
+    {
+        "Vulnerability": "Cisco Smart Software Manager On-Prem Password Change Vulnerability",
+        "Severity": "Critical"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Stored Cross-Site Scripting Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software iPXE Boot Signature Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Secure Email Gateway Arbitrary File Write Vulnerability",
+        "Severity": "Critical"
+    },
+    {
+        "Vulnerability": "Cisco Secure Web Appliance Privilege Escalation Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Arbitrary File Upload Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Intelligent Node Software Static Key Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Webex App Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco RV340 and RV345 Dual WAN Gigabit VPN Routers Authenticated Remote Code Execution Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Expressway Series Open Redirect Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Secure Email Gateway Server-Side Template Injection Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software Secure Boot Bypass Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco NX-OS Software CLI Command Injection Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Integrated Management Controller Web-Based Management Interface Command Injection Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Integrated Management Controller CLI Command Injection Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Finesse Web-Based Management Interface Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Secure Email and Web Manager, Secure Email Gateway, and Secure Web Appliance Cross-Site Scripting Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Secure Email Gateway HTTP Response Splitting Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Webex Meetings Meeting Information and Metadata Issue June 2024",
+        "Severity": "Informational"
+    },
+    {
+        "Vulnerability": "Cisco OpenDNS Pulsing DNS Denial of Service Attack",
+        "Severity": "Informational"
+    },
+    {
+        "Vulnerability": "Cisco Firepower Management Center Software SQL Injection Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance Software and Firepower Threat Defense Software for Firepower 2100 Series Appliances SSL/TLS Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance Software and Firepower Threat Defense Software DNS Inspection Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Multiple Cisco Products Snort 3 HTTP Intrusion Prevention System Rule Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Firepower Threat Defense Software Encrypted Archive File Policy Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Firepower Management Center Software Object Group Access Control List Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance and Firepower Threat Defense Software Authorization Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance and Firepower Threat Defense Software Inactive-to-Active ACL Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Multiple Cisco Unified Communications Products Unauthenticated API High CPU Utilization Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Crosswork Network Services Orchestrator Vulnerabilities",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Crosswork Network Services Orchestrator Privilege Escalation Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "ConfD CLI Privilege Escalation and Arbitrary File Read and Write Vulnerabilities",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Secure Client for Windows with Network Access Manager Module Privilege Escalation Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Crosswork Network Services Orchestrator Open Redirect Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco AppDynamics Network Visibility Service Denial of Service Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IP Phone 6800, 7800, and 8800 Series with Multiplatform Firmware Vulnerabilities",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance and Firepower Threat Defense Software Web Services Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance and Firepower Threat Defense Software Persistent Local Code Execution Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Adaptive Security Appliance and Firepower Threat Defense Software Command Injection Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS and IOS XE Software SNMP Extended Named Access Control List Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS Software for Catalyst 6000 Series Switches Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Nexus Dashboard Fabric Controller Plug and Play Arbitrary File Read Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco TelePresence Management Suite Cross-Site Scripting Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Small Business RV016, RV042, RV042G, RV082, RV320, and RV325 Routers Cross-Site Scripting Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Nexus Dashboard Privilege Escalation Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Nexus Dashboard Orchestrator Unauthorized Policy Actions Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Nexus Dashboard Information Disclosure Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Nexus Dashboard and Nexus Dashboard Hosted Services Cross-Site Request Forgery Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Server-Side Request Forgery Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Cross-Site Request Forgery Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Enterprise Chat and Email Cross-Site Scripting Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Unified Communications Manager IM & Presence Service Cross-Site Scripting Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Emergency Responder Cross-Site Request Forgery and Directory Traversal Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software Unified Threat Defense Command Injection Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software for Wireless LAN Controllers Multicast DNS Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS and IOS XE Software Locator ID Separation Protocol Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS and IOS XE Software Intermediate System-to-Intermediate System Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software OSPFv2 Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software SD-Access Fabric Edge Node Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS and IOS XE Software Internet Key Exchange Version 1 Fragmentation Denial of Service Vulnerabilities",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software DHCP Snooping with Endpoint Analytics Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Access Point Software Secure Boot Bypass Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Access Point Software Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software for Wireless LAN Controllers Privilege Escalation Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software Privilege Escalation Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software NETCONF/RESTCONF IPv4 Access Control List Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Catalyst Center Authorization Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XE Software Auxiliary Asynchronous Port Denial of Service Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Aironet Access Point Software Resource Exhaustion Denial of Service Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software Health Check Open Port Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software Layer 2 Services Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software SSH Privilege Escalation Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software for ASR 9000 Series Aggregation Services Routers PPPoE Denial of Service Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software SNMP Management Plane Protection ACL Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software Authenticated CLI Secure Copy Protocol and SFTP Denial of Service Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software DHCP Version 4 Server Denial of Service Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco IOS XR Software MPLS and Pseudowire Interfaces Access Control List Bypass Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco SD-WAN vManage Unauthenticated REST API Access Vulnerability",
+        "Severity": "Critical"
+    },
+    {
+        "Vulnerability": "Cisco Secure Client Carriage Return Line Feed Injection Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Duo Authentication for Windows Logon and RDP Information Disclosure Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Secure Client for Linux with ISE Posture Module Privilege Escalation Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Small Business 100, 300, and 500 Series Wireless Access Points Command Injection and Buffer Overflow Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Duo Authentication for Windows Logon and RDP Authentication Bypass Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco AppDynamics Controller Cross-Site Scripting Vulnerability",
+        "Severity": "Medium"
+    }
+]
