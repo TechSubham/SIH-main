@@ -1,5 +1,41 @@
 [
     {
+        "Vulnerability": "Remote Unauthenticated Code Execution Vulnerability in OpenSSH Server (regreSSHion): July 2024",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Sensitive Information Disclosure Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Smart Licensing Utility Vulnerabilities",
+        "Severity": "Critical"
+    },
+    {
+        "Vulnerability": "Cisco Meraki Systems Manager Agent for Windows Privilege Escalation Vulnerability",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Cisco Identity Services Engine Command Injection Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Expressway Edge Improper Authorization Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "Cisco Duo Epic for Hyperdrive Information Disclosure Vulnerability",
+        "Severity": "Medium"
+    },
+    {
+        "Vulnerability": "RADIUS Protocol Spoofing Vulnerability (Blast-RADIUS): July 2024",
+        "Severity": "High"
+    },
+    {
+        "Vulnerability": "Multiple Cisco Products OpenSocial Gadget Editor Vulnerabilities",
+        "Severity": "Medium"
+    },
+    {
         "Vulnerability": "Cisco NX-OS Software DHCPv6 Relay Agent Denial of Service Vulnerability",
         "Severity": "High"
     },
@@ -36,24 +72,12 @@
         "Severity": "High"
     },
     {
-        "Vulnerability": "Remote Unauthenticated Code Execution Vulnerability in OpenSSH Server (regreSSHion): July 2024",
-        "Severity": "High"
-    },
-    {
-        "Vulnerability": "Cisco Identity Services Engine Sensitive Information Disclosure Vulnerability",
-        "Severity": "Medium"
-    },
-    {
         "Vulnerability": "Cisco Identity Services Engine Cross-Site Request Forgery Vulnerability",
         "Severity": "Medium"
     },
     {
         "Vulnerability": "Cisco Unified Communications Manager Cross-Site Scripting Vulnerability",
         "Severity": "Medium"
-    },
-    {
-        "Vulnerability": "RADIUS Protocol Spoofing Vulnerability (Blast-RADIUS): July 2024",
-        "Severity": "High"
     },
     {
         "Vulnerability": "Cisco Secure Web Appliance Content Encoding Filter Bypass Vulnerability",
@@ -374,29 +398,5 @@
     {
         "Vulnerability": "Cisco SD-WAN vManage Unauthenticated REST API Access Vulnerability",
         "Severity": "Critical"
-    },
-    {
-        "Vulnerability": "Cisco Secure Client Carriage Return Line Feed Injection Vulnerability",
-        "Severity": "High"
-    },
-    {
-        "Vulnerability": "Cisco Duo Authentication for Windows Logon and RDP Information Disclosure Vulnerability",
-        "Severity": "Medium"
-    },
-    {
-        "Vulnerability": "Cisco Secure Client for Linux with ISE Posture Module Privilege Escalation Vulnerability",
-        "Severity": "High"
-    },
-    {
-        "Vulnerability": "Cisco Small Business 100, 300, and 500 Series Wireless Access Points Command Injection and Buffer Overflow Vulnerabilities",
-        "Severity": "Medium"
-    },
-    {
-        "Vulnerability": "Cisco Duo Authentication for Windows Logon and RDP Authentication Bypass Vulnerability",
-        "Severity": "Medium"
-    },
-    {
-        "Vulnerability": "Cisco AppDynamics Controller Cross-Site Scripting Vulnerability",
-        "Severity": "Medium"
     }
 ]

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import background from "../../public/background2.jpg";
+import background from "../../public/signup.avif";
 import Image from "next/image";
 
 export default function SignUp() {
@@ -38,7 +38,6 @@ export default function SignUp() {
   return (
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <div className="relative flex w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-        {/* Signup Form Section */}
         <motion.div
           className="w-full lg:w-1/2 p-8 flex flex-col justify-center"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -159,7 +158,6 @@ export default function SignUp() {
           </motion.div>
         </motion.div>
 
-        {/* Background Image Section */}
         <motion.div
           className="hidden lg:block w-1/2 relative"
           initial={{ x: '100%', opacity: 0 }}

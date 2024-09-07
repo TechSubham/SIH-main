@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "../../lib/firebaseConfig"; 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
-import background2 from "../../public/background2.jpg";
+import background2 from "../../public/login_bg.jpg";
 import { motion } from "framer-motion";
 
 const Login = () => {

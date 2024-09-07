@@ -1,8 +1,8 @@
 import json
 import os
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
+from selenium import webdriver 
+from selenium.webdriver.chrome.options import Options 
+from selenium.webdriver.common.by import By 
 from bs4 import BeautifulSoup
 import time
 
@@ -25,7 +25,7 @@ def scrape_page():
     if not vulnerabilities:
         print("No vulnerabilities found on page.")
         return False
-    
+        
     for item in vulnerabilities:
         vulnerability_name = item.find('a').text.strip()
         
