@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faTimes,
-  faUsers,
   faSignOutAlt,
   faGear,
   faChartSimple,
@@ -12,6 +11,7 @@ import {
   faBell,
   faCircleExclamation,
   faPhone,
+  faShieldHalved
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../../public/Logo.png";
 import Image from "next/image";
@@ -96,7 +96,7 @@ const Page = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-gray-200 rounded-lg overflow-hidden">
+    <div className=" font-serif grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-slate-200 rounded-lg overflow-hidden">
       <motion.div
         className={`fixed inset-y-0 left-0 transform lg:transform-none lg:static z-50 w-64 bg-white flex flex-col transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -118,7 +118,8 @@ const Page = () => {
         </div>
 
         <div className="mt-6 px-3">
-          <div className="text-black font-semibold text-2xl mb-4">Menu</div>
+          <div className="text-black font-semibold text-xl mb-4">Main</div>
+          
           <ul className="space-y-4 ml-5">
           <li
               className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
@@ -139,7 +140,7 @@ const Page = () => {
               }`}
               onClick={() => setCurrentView("vulnerability")}
             >
-              <FontAwesomeIcon icon={faUsers} className="w-6 h-6 mr-3" />
+              <FontAwesomeIcon icon={faShieldHalved} className="w-6 h-6 mr-3" />
               <span>Vulnerability</span>
             </li>
             <li
@@ -160,7 +161,7 @@ const Page = () => {
         </div>
 
         <div className="mt-6 px-3">
-          <div className="text-black font-semibold text-2xl mb-4">General</div>
+          <div className="text-black font-semibold text-xl mb-4 border "></div>
           <ul className="space-y-3 ml-5">
             <li className="flex items-center p-2 rounded-lg text-gray-600 hover:bg-blue-500 hover:cursor-pointer hover:text-white">
               <FontAwesomeIcon icon={faGear} className="w-6 h-6 mr-3" />
@@ -172,11 +173,10 @@ const Page = () => {
             </li>
           </ul>
         </div>
-
         <div className="px-3 mt-auto mb-4">
           <button
             onClick={handleLogout}
-            className="flex items-center w-full p-2 rounded-lg text-gray-600 hover:bg-red-500 hover:text-white transition-colors duration-200"
+            className="flex relative  bottom-5 items-center justify-center w-full p-2 rounded-lg bg-red-500 text-white hover:bg-red-700 hover:text-white transition-colors duration-200"
           >
             <FontAwesomeIcon icon={faSignOutAlt} className="w-8 h-8 mr-3" />
             <span>Logout</span>
@@ -260,7 +260,7 @@ const Page = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 lg:hidden"
+                      className="absolute right-0 mt-2 w-auto p-3 pb-2 bg-white rounded-md shadow-lg py-1 z-10 lg:hidden"
                     >
                       <div className="px-4 py-2 text-sm text-gray-700">
                         <div className="font-medium">{user.name}</div>
@@ -269,7 +269,7 @@ const Page = () => {
                       <hr className="my-1" />
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-500"
+                        className="block w-full px-4 py-2 text-sm bg-red-500 text-white hover:bg-red-700 justify-center align-middle rounded-xl "
                       >
                         Logout
                       </button>

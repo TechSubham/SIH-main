@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const Page = () => {
   return (
-    <div className="bg-white h-screen w-full overflow-hidden relative">
+    <div className="font-serif bg-white h-screen w-full overflow-hidden relative">
       <div className="absolute inset-0">
         <motion.div 
           className="bg-gray-200 w-64 h-64 rounded-3xl rotate-45 relative bottom-48 right-20 shadow-xl"
@@ -149,19 +149,25 @@ const Page = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 2.4 }}
-        ></motion.div>
+        >
+          Details to be filled
+        </motion.div>
         <motion.div 
           className="relative bottom-[257%] border w-[25%] h-24 ml-[35%] bg-gray-100 rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 2.6 }}
-        ></motion.div>
+        >
+          Details to be filled
+        </motion.div>
         <motion.div 
           className="relative bottom-[269%] border w-[25%] h-24 ml-[65%] bg-gray-100 rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 2.8 }}
-        ></motion.div>
+        >
+          Details to be filled
+        </motion.div>
         <motion.div 
           className="w-[70%] h-[30%] rounded-3xl relative bottom-[359%] -rotate-45 left-[64.5%] bg-black bg-opacity-10 shadow-md"
           initial={{ opacity: 0 }}

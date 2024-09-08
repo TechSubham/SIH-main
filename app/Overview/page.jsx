@@ -17,7 +17,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-2"
       >
-        Card 1
+    
       </motion.div>
       <motion.div
         whileHover={{
@@ -27,7 +27,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-2"
       >
-        Card 2
+     
       </motion.div>
       <motion.div
         whileHover={{
@@ -37,7 +37,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-2"
       >
-        Card 3
+
       </motion.div>
       <motion.div
         whileHover={{
@@ -47,7 +47,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-4"
       >
-        Card 4
+   
       </motion.div>
       <motion.div
         whileHover={{
@@ -57,7 +57,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-3 lg:row-span-3"
       >
-        Card 5
+
       </motion.div>
       <motion.div
         whileHover={{
@@ -67,7 +67,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-3"
       >
-        Card 6
+
       </motion.div>
       <motion.div
         whileHover={{
@@ -77,7 +77,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-2"
       >
-        Card 7
+
       </motion.div>
       <motion.div
         whileHover={{
@@ -87,7 +87,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-2"
       >
-        Card 8
+
       </motion.div>
       <motion.div
         whileHover={{
@@ -97,7 +97,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-4 text-black col-span-1 row-span-10 lg:col-span-1 lg:row-span-2"
       >
-        Card 9
+
       </motion.div>
     </motion.div>
   );

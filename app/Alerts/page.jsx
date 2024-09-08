@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import emailData from "../../data/dummy_email_data.json";
+import emailDatabase from "../../data/dummy_email_data.json";
 import {
   Table,
   TableBody,
@@ -15,6 +15,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Page = () => {
   const [sorting, setSorting] = useState([]);
@@ -33,7 +37,7 @@ const Page = () => {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [data, setData] = useState(emailData);
+  const [data, setData] = useState(emailDatabase);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -41,6 +45,7 @@ const Page = () => {
     date: "",
   });
 
+  const [editingId, setEditingId] = useState(null);
   const columns = [
     {
       id: "select",
@@ -77,6 +82,27 @@ const Page = () => {
       accessorKey: "mobile",
       header: "Mobile",
     },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const rowData = row.original;
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-2 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleEdit(rowData)}>
+                Edit
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({
@@ -103,7 +129,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData"));
+    const storedData = JSON.parse(localStorage.getItem("emailDatabase"));
     if (storedData) {
       setData(storedData);
     }
@@ -111,52 +137,46 @@ const Page = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const newData = [...data, formData];
+    const newData = editingId
+      ? data.map((item) => (item.id === editingId ? { ...formData, id: editingId } : item))
+      : [...data, { ...formData, id: Date.now() }];
     setData(newData);
+    localStorage.setItem("emailDatabase", JSON.stringify(newData));
     setFormData({ name: "", email: "", mobile: "", date: "" });
     setIsFormOpen(false);
+    setEditingId(null);
+  };
+
+  const handleEdit = (rowData) => {
+    setFormData(rowData);
+    setEditingId(rowData.id);
+    setIsFormOpen(true);
   };
 
   return (
-    <div
-      className={` h-full lg:h-[100%] bg-gray-200 relative ${
-        isFormOpen ? "overflow-hidden" : ""
-      }`}
-    >
-      <div
-        className={`grid grid-rows-[auto_1fr] lg:ml-0 transition-opacity duration-300 ${
-          isFormOpen ? "opacity-50 pointer-events-none" : ""
-        }`}
-      >
-        <div className="p-2">
-          <div className="flex items-center py-2">
-            <Input
-              placeholder="Enter the Email"
-              value={table.getColumn("email")?.getFilterValue() ?? ""}
-              onChange={(event) =>
-                table.getColumn("email")?.setFilterValue(event.target.value)
-              }
-              className="max-w-sm border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:ring focus:ring-indigo-300"
-            />
-            <Button
-              onClick={() => setIsFormOpen(true)}
-              className="ml-2 px-4 py-2 text-sm bg-blue-500 text-white border border-blue-600 rounded-md shadow-sm hover:bg-blue-600"
-            >
+    <div className="h-full bg-slate-200  lg:pl-4 lg:pr-4 lg:mt-2 mt-3">
+      <div className={`grid gap-4 ${isFormOpen ? "opacity-50 pointer-events-none" : ""}`}>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Input
+            placeholder="Filter emails"
+            value={table.getColumn("email")?.getFilterValue() ?? ""}
+            onChange={(event) =>
+              table.getColumn("email")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <div className="flex gap-2">
+            <Button onClick={() => setIsFormOpen(true)} className="whitespace-nowrap">
+              <FontAwesomeIcon icon={faPlus} className="w-4 mr-2" />
               Add
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="ml-auto px-4 py-2 lg:relative lg:right-4 text-sm bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-100"
-                >
-                  Info
+                <Button variant="outline" className="ml-auto">
+                  Columns
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="bg-white rounded-md shadow-md"
-              >
+              <DropdownMenuContent align="end">
                 {table
                   .getAllColumns()
                   .filter((column) => column.getCanHide())
@@ -164,126 +184,109 @@ const Page = () => {
                     return (
                       <DropdownMenuCheckboxItem
                         key={column.id}
-                        className="capitalize text-sm px-4 py-2"
+                        className="capitalize"
                         checked={column.getIsVisible()}
                         onCheckedChange={(value) =>
                           column.toggleVisibility(!!value)
                         }
                       >
-                        {column.columnDef.header}
+                        {column.id}
                       </DropdownMenuCheckboxItem>
                     );
                   })}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+        </div>
 
-          {/* Table Container */}
-          <div className=" bg-white rounded-md border border-gray-300 shadow-md overflow-hidden">
-            <div className="h-[70%] overflow-auto">
-              <Table className="min-w-full">
-                <TableHeader className="bg-blue-500 text-left text-white sticky top-0">
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <TableHead
-                         
-                            key={header.id}
-                            className="p-4 text-sm font-medium text-white text-center bg-blue-600"
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
-                          </TableHead>
-                        );
-                      })}
+        <div className="rounded-md border bg-white shadow-2xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id} className="bg-blue-600 text-white">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
                     </TableRow>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() && "selected"}
-                        className="hover:bg-gray-200 transition-colors text-center"
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell
-                            key={cell.id}
-                            className="p-4 border-b border-gray-200 text-sm text-gray-700"
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className="h-24 text-center text-sm text-gray-500"
-                      >
-                        No results.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
+        </div>
 
-          {/* Pagination and Selected Rows Info */}
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="flex-1 text-sm text-gray-500 lg:block hidden md:block">
-              {table.getFilteredSelectedRowModel().rows.length} of{" "}
-              {table.getFilteredRowModel().rows.length} row(s) selected.
-            </div>
-            <div className="space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className="px-8 relative right-40 sm:right-6 text-sm bg-white border border-gray-300 rounded-md shadow-sm hover:bg-yellow-500 disabled:bg-gray-200"
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className="px-8 relative right-36 sm:right-8 text-sm bg-white border border-gray-300 rounded-md shadow-sm hover:bg-green-500 disabled:bg-gray-200"
-              
-              >
-                Next
-              </Button>
-            </div>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-gray-500">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Form Popup */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
-          <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-2xl transform transition-all duration-500 ease-in-out">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+          <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-2xl">
             <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-              User Form
+              {editingId ? "Edit User" : "Add User"}
             </h2>
             <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="name"
-                >
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Name
                 </label>
                 <input
@@ -292,15 +295,13 @@ const Page = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
                   placeholder="Enter your name"
+                  required
                 />
               </div>
               <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="email"
-                >
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                   Email
                 </label>
                 <input
@@ -309,32 +310,28 @@ const Page = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
                   placeholder="Enter your email"
+                  required
                 />
               </div>
               <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="mobile"
-                >
+                <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-1">
                   Mobile No
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   id="mobile"
                   name="mobile"
                   value={formData.mobile}
                   onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your mobile number"
+                  required
                 />
               </div>
               <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="date"
-                >
+                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
                   Date
                 </label>
                 <input
@@ -343,58 +340,28 @@ const Page = () => {
                   name="date"
                   value={formData.date}
                   onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
                 />
               </div>
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="gender"
-                >
-                  Gender
-                </label>
-                <select
-                  id="gender"
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                >
-                  <option value="">Select your gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                  htmlFor="dob"
-                >
-                  Date of Birth
-                </label>
-                <input
-                  type="date"
-                  id="dob"
-                  name="dob"
-                  value={formData.dob}
-                  onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                />
-              </div>
+              
               <div className="flex justify-end space-x-4 mt-6">
                 <Button
                   type="button"
-                  onClick={() => setIsFormOpen(false)}
-                  className="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400 transition-all duration-300"
+                  onClick={() => {
+                    setIsFormOpen(false);
+                    setEditingId(null);
+                    setFormData({ name: "", email: "", mobile: "", date: "" });
+                  }}
+                  className="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition-all duration-300"
+                  className="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
                 >
-                  Submit
+                  {editingId ? "Update" : "Submit"}
                 </Button>
               </div>
             </form>

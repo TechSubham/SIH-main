@@ -36,7 +36,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex items-center justify-center">
+    <div className=" font-serif min-h-screen bg-gray-200 flex items-center justify-center">
       <div className="relative flex w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
         <motion.div
           className="w-full lg:w-1/2 p-8 flex flex-col justify-center"
