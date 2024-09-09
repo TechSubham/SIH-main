@@ -199,7 +199,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="rounded-md border bg-white shadow-2xl overflow-hidden">
+        <div className=" border bg-white shadow-2xl  rounded-3xl overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
