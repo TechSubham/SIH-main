@@ -13,7 +13,7 @@ import {
   faPhone,
   faShieldHalved
 } from "@fortawesome/free-solid-svg-icons";
-import Logo from "../../public/Logo.png";
+import Qubit from "../../public/Qubit.png";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Overview from "../Overview/page.jsx";
@@ -115,7 +115,7 @@ const Page = () => {
           </button>
         </div>
         <div className="relative bottom-4">
-          <Image src={Logo} className="w-28 h-28 text-purple-800" />
+          <Image src={Qubit} className="w-28 h-28 text-purple-800" />
           <div className="font-extrabold text-2xl absolute top-10 left-24 text-blue-800">
             QUBIT
           </div>
