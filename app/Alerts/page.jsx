@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import emailDatabase from "../../data/dummy_email_data.json";
+import Qubit_data from "../../data/dummy_email_data.json";
 import {
   Table,
   TableBody,
@@ -40,7 +40,7 @@ const Page = () => {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [data, setData] = useState(emailDatabase);
+  const [data, setData] = useState(Qubit_data);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -132,7 +132,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("emailDatabase"));
+    const storedData = JSON.parse(localStorage.getItem("Qubit_data"));
     if (storedData) {
       setData(storedData);
     }
@@ -144,7 +144,7 @@ const Page = () => {
       ? data.map((item) => (item.id === editingId ? { ...formData, id: editingId } : item))
       : [...data, { ...formData, id: Date.now() }];
     setData(newData);
-    localStorage.setItem("emailDatabase", JSON.stringify(newData));
+    localStorage.setItem("Qubit_data", JSON.stringify(newData));
     setFormData({ name: "", email: "", mobile: "", date: "" });
     setIsFormOpen(false);
     setEditingId(null);
