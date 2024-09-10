@@ -371,35 +371,6 @@ const Page = () => {
                   required
                 />
               </div>
-              <div>
-                <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-1">
-                  Product Affected
-                </label>
-                <input
-                  type="text"
-                  id="mobile"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter affected product"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-                  Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
               
               <div className="flex justify-end space-x-4 mt-6">
                 <Button

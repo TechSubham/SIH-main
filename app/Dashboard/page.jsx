@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Overview from "../Overview/page.jsx";
 import Vulnerability from "../Vulnerability/page.jsx";
 import Alert from "../Alerts/page.jsx";
+import Contact from "../Contact/page.jsx"
 import { auth } from "../../firebaseConfig.js";
 import { signOut } from "firebase/auth";
 import { useRouter } from 'next/navigation';
@@ -94,6 +95,8 @@ const Page = () => {
         return <Alert />;
       case "alert":
         return <Overview />;
+      case "Contact":
+        return <Contact />;
       default:
         return <Overview />;
     }
@@ -171,7 +174,12 @@ const Page = () => {
               <FontAwesomeIcon icon={faGear} className="w-6 h-6 mr-3" />
               <span>Settings</span>
             </li> */}
-            <li className="flex items-center p-2 rounded-lg text-gray-600 hover:bg-blue-500 hover:cursor-pointer hover:text-white">
+            <li className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
+                currentView === "Contact"
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-600 hover:bg-blue-500 hover:text-white"
+              }`}
+              onClick={() => setCurrentView("Contact")}>
               <FontAwesomeIcon icon={faPhone} className="w-6 h-6 mr-3" />
               <span>Contact Us</span>
             </li>
