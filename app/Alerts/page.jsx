@@ -30,6 +30,8 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Plus_Jakarta_Sans } from 'next/font/google';
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] });
 
 const Page = () => {
   const [sorting, setSorting] = useState([]);
@@ -154,7 +156,7 @@ const Page = () => {
   };
 
   return (
-    <div className="h-full bg-slate-200  lg:pl-4 lg:pr-4 lg:mt-2 mt-3">
+    <div className={`${plusJakartaSans.className} h-full bg-slate-200  lg:pl-4 lg:pr-4 lg:mt-2 mt-3`}>
       <div className={`grid gap-4 ${isFormOpen ? "opacity-50 pointer-events-none" : ""}`}>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <Input

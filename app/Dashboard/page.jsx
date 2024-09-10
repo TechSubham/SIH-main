@@ -23,6 +23,10 @@ import { auth } from "../../firebaseConfig.js";
 import { signOut } from "firebase/auth";
 import { useRouter } from 'next/navigation';
 
+import { Plus_Jakarta_Sans } from 'next/font/google';
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] });
+
+
 const Page = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState("dashboard");
@@ -96,7 +100,7 @@ const Page = () => {
   };
 
   return (
-    <div className=" font-serif grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-slate-200 rounded-lg overflow-hidden">
+    <div className={`${plusJakartaSans.className} grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-slate-200 rounded-lg overflow-hidden`}>
       <motion.div
         className={`fixed inset-y-0 left-0 transform lg:transform-none lg:static z-50 w-64 bg-white flex flex-col transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
