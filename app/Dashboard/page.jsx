@@ -147,7 +147,7 @@ const Page = () => {
               <FontAwesomeIcon icon={faShieldHalved} className="w-6 h-6 mr-3" />
               <span>Alerts</span>
             </li>
-            <li
+            {/* <li
               className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
                 currentView === "alert"
                   ? "bg-blue-500 text-white"
@@ -160,17 +160,17 @@ const Page = () => {
                 className="w-6 h-6 mr-3"
               />
               <span>Overview</span>
-            </li>
+            </li> */}
           </ul>
         </div>
 
         <div className="mt-6 px-3">
           <div className="text-black font-semibold text-xl mb-4 border "></div>
           <ul className="space-y-3 ml-5">
-            <li className="flex items-center p-2 rounded-lg text-gray-600 hover:bg-blue-500 hover:cursor-pointer hover:text-white">
+            {/* <li className="flex items-center p-2 rounded-lg text-gray-600 hover:bg-blue-500 hover:cursor-pointer hover:text-white">
               <FontAwesomeIcon icon={faGear} className="w-6 h-6 mr-3" />
               <span>Settings</span>
-            </li>
+            </li> */}
             <li className="flex items-center p-2 rounded-lg text-gray-600 hover:bg-blue-500 hover:cursor-pointer hover:text-white">
               <FontAwesomeIcon icon={faPhone} className="w-6 h-6 mr-3" />
               <span>Contact Us</span>

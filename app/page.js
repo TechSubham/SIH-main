@@ -237,7 +237,7 @@ const Page = () => {
 
         {/* Content */}
         <motion.div
-          className="w-full max-w-4xl sm:space-y-12 text-center relative z-10"
+          className="w-full max-w-4xl sm:space-y-12 space-y-5 text-center relative z-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -265,18 +265,13 @@ const Page = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <input
-              type="email"
-              className="w-full h-12 sm:h-14 pl-4 sm:pl-6 pr-24 sm:pr-32 rounded-full border-2 border-blue-300 bg-white text-sm sm:text-base md:text-lg focus:outline-none focus:border-blue-500 transition-colors"
-              placeholder="Enter your email"
-            />
             <Link href="/SignUp">
               <motion.button
-                className="absolute top-1 right-1 h-10 md:h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 md:px-6 rounded-full text-base md:text-lg font-semibold flex items-center"
+                className="relative top-1 left-40 h-10 md:h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 md:px-6 rounded-full text-base md:text-lg font-semibold flex items-center"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Start Trial
+                Get Started
                 <ArrowRight className="ml-1 sm:ml-2 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               </motion.button>
             </Link>
