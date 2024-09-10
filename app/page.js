@@ -123,7 +123,7 @@ const Page = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 2 }}
           >
-            this is team qubit here and we are working on a webscraping project
+             Revolutionizing web scraping with cutting-edge technology 
           </motion.div>
 
           <motion.div
@@ -132,18 +132,18 @@ const Page = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 2.2 }}
           >
-            <input
+            {/* <input
               type="text"
               className="w-full h-12 pl-4 pr-32 rounded-full border border-blue-100 bg-gray-100"
               placeholder="Enter your email"
-            />
+            /> */}
             <Link href="/SignUp">
             <motion.button
-              className="absolute top-0 right-0 h-12 bg-blue-600 text-white px-6 rounded-full"
+              className="relative left-32 top-0 right-0 h-12 bg-blue-600 text-white px-6 rounded-full"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               >
-              Start Trial
+             Get Started
             </motion.button>
               </Link>
           </motion.div>
