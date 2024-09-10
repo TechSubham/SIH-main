@@ -89,11 +89,11 @@ const Page = () => {
   const renderView = () => {
     switch (currentView) {
       case "dashboard":
-        return <Overview />;
-      case "vulnerability":
         return <Vulnerability />;
-      case "alert":
+      case "vulnerability":
         return <Alert />;
+      case "alert":
+        return <Overview />;
       default:
         return <Overview />;
     }
@@ -133,8 +133,8 @@ const Page = () => {
               }`}
               onClick={() => setCurrentView("dashboard")}
             >
-              <FontAwesomeIcon icon={faChartSimple} className="w-6 h-6 mr-3" />
-              <span>Overview</span>
+              <FontAwesomeIcon icon={faCircleExclamation} className="w-6 h-6 mr-3" />
+              <span>Vulnerability</span>
             </li>
             <li
               className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
@@ -145,7 +145,7 @@ const Page = () => {
               onClick={() => setCurrentView("vulnerability")}
             >
               <FontAwesomeIcon icon={faShieldHalved} className="w-6 h-6 mr-3" />
-              <span>Vulnerability</span>
+              <span>Alerts</span>
             </li>
             <li
               className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
@@ -156,10 +156,10 @@ const Page = () => {
               onClick={() => setCurrentView("alert")}
             >
               <FontAwesomeIcon
-                icon={faCircleExclamation}
+                icon={faChartSimple}
                 className="w-6 h-6 mr-3"
               />
-              <span>Alerts</span>
+              <span>Overview</span>
             </li>
           </ul>
         </div>

@@ -1,3 +1,6 @@
+
+
+
 // "use client";
 // import React, { useState, useEffect } from "react";
 // import { Checkbox } from "@/components/ui/checkbox";
@@ -157,7 +160,7 @@
 //   };
 
 //   return (
-//     <div className={`${plusJakartaSans.className} h-full bg-slate-200  lg:pl-4 lg:pr-4 lg:mt-2 mt-3`}>
+//     <div className={`${plusJakartaSans.className} h-full bg-slate-200 lg:pl-4 lg:pr-4 lg:mt-2 mt-3`}>
 //       <div className={`grid gap-4 ${isFormOpen ? "opacity-50 pointer-events-none" : ""}`}>
 //         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
 //           <Input
@@ -202,56 +205,58 @@
 //           </div>
 //         </div>
 
-//         <div className=" border bg-white shadow-2xl  rounded-3xl overflow-hidden">
-//           <div className="overflow-x-auto">
-//             <Table>
-//               <TableHeader>
-//                 {table.getHeaderGroups().map((headerGroup) => (
-//                   <TableRow key={headerGroup.id}>
-//                     {headerGroup.headers.map((header) => {
-//                       return (
-//                         <TableHead key={header.id} className="bg-blue-600 text-white">
-//                           {header.isPlaceholder
-//                             ? null
-//                             : flexRender(
-//                                 header.column.columnDef.header,
-//                                 header.getContext()
+//         <div className="border bg-white shadow-2xl rounded-3xl overflow-hidden" style={{ height: "calc(100vh - 200px)" }}>
+//           <div className="overflow-x-auto h-full">
+//             <div className="inline-block min-w-full align-middle">
+//               <div className="overflow-hidden">
+//                 <Table>
+//                   <TableHeader>
+//                     {table.getHeaderGroups().map((headerGroup) => (
+//                       <TableRow key={headerGroup.id}>
+//                         {headerGroup.headers.map((header) => (
+//                           <TableHead key={header.id} className="bg-blue-600 text-white sticky top-0 z-10">
+//                             {header.isPlaceholder
+//                               ? null
+//                               : flexRender(
+//                                   header.column.columnDef.header,
+//                                   header.getContext()
+//                                 )}
+//                           </TableHead>
+//                         ))}
+//                       </TableRow>
+//                     ))}
+//                   </TableHeader>
+//                   <TableBody>
+//                     {table.getRowModel().rows?.length ? (
+//                       table.getRowModel().rows.map((row) => (
+//                         <TableRow
+//                           key={row.id}
+//                           data-state={row.getIsSelected() && "selected"}
+//                         >
+//                           {row.getVisibleCells().map((cell) => (
+//                             <TableCell key={cell.id}>
+//                               {flexRender(
+//                                 cell.column.columnDef.cell,
+//                                 cell.getContext()
 //                               )}
-//                         </TableHead>
-//                       );
-//                     })}
-//                   </TableRow>
-//                 ))}
-//               </TableHeader>
-//               <TableBody>
-//                 {table.getRowModel().rows?.length ? (
-//                   table.getRowModel().rows.map((row) => (
-//                     <TableRow
-//                       key={row.id}
-//                       data-state={row.getIsSelected() && "selected"}
-//                     >
-//                       {row.getVisibleCells().map((cell) => (
-//                         <TableCell key={cell.id}>
-//                           {flexRender(
-//                             cell.column.columnDef.cell,
-//                             cell.getContext()
-//                           )}
+//                             </TableCell>
+//                           ))}
+//                         </TableRow>
+//                       ))
+//                     ) : (
+//                       <TableRow>
+//                         <TableCell
+//                           colSpan={columns.length}
+//                           className="h-24 text-center"
+//                         >
+//                           No results.
 //                         </TableCell>
-//                       ))}
-//                     </TableRow>
-//                   ))
-//                 ) : (
-//                   <TableRow>
-//                     <TableCell
-//                       colSpan={columns.length}
-//                       className="h-24 text-center"
-//                     >
-//                       No results.
-//                     </TableCell>
-//                   </TableRow>
-//                 )}
-//               </TableBody>
-//             </Table>
+//                       </TableRow>
+//                     )}
+//                   </TableBody>
+//                 </Table>
+//               </div>
+//             </div>
 //           </div>
 //         </div>
 
@@ -290,7 +295,7 @@
 //             <form onSubmit={handleFormSubmit} className="space-y-4">
 //               <div>
 //                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-//                   Name
+//                   Source Name
 //                 </label>
 //                 <input
 //                   type="text"
@@ -299,7 +304,7 @@
 //                   value={formData.name}
 //                   onChange={handleFormChange}
 //                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-//                   placeholder="Enter your name"
+//                   placeholder="Enter source name"
 //                   required
 //                 />
 //               </div>
@@ -314,22 +319,22 @@
 //                   value={formData.email}
 //                   onChange={handleFormChange}
 //                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-//                   placeholder="Enter your email"
+//                   placeholder="Enter email"
 //                   required
 //                 />
 //               </div>
 //               <div>
 //                 <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-1">
-//                   Mobile No
+//                   Product Affected
 //                 </label>
 //                 <input
-//                   type="tel"
+//                   type="text"
 //                   id="mobile"
 //                   name="mobile"
 //                   value={formData.mobile}
 //                   onChange={handleFormChange}
 //                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                   placeholder="Enter your mobile number"
+//                   placeholder="Enter affected product"
 //                   required
 //                 />
 //               </div>
@@ -379,9 +384,8 @@
 
 
 
-
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Qubit_data from "../../data/dummy_email_data.json";
 import {
@@ -398,7 +402,9 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuItem
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -410,7 +416,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, ChevronDown } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Plus_Jakarta_Sans } from 'next/font/google';
@@ -429,8 +435,19 @@ const Page = () => {
     mobile: "",
     date: "",
   });
-
   const [editingId, setEditingId] = useState(null);
+  const [selectedSource, setSelectedSource] = useState("All");
+
+  const sourceNames = useMemo(() => {
+    const names = ["All", ...new Set(data.map(item => item.name))];
+    return names.sort();
+  }, [data]);
+
+  const filteredData = useMemo(() => {
+    if (selectedSource === "All") return data;
+    return data.filter(item => item.name === selectedSource);
+  }, [data, selectedSource]);
+
   const columns = [
     {
       id: "select",
@@ -453,7 +470,25 @@ const Page = () => {
     },
     {
       accessorKey: "name",
-      header: "Source Name",
+      header: () => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-full justify-start">
+              Source Name <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {sourceNames.map((name) => (
+              <DropdownMenuItem
+                key={name}
+                onClick={() => setSelectedSource(name)}
+              >
+                {name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
     },
     {
       accessorKey: "email",
@@ -491,7 +526,7 @@ const Page = () => {
   ];
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -674,18 +709,37 @@ const Page = () => {
             <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
+                  Source Name
                 </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your name"
-                  required
-                />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="w-full justify-between">
+                      {formData.name || "Select a source"}
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-full">
+                    <DropdownMenuLabel>Select a source</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {sourceNames.filter(name => name !== "All").map((name) => (
+                      <DropdownMenuItem
+                        key={name}
+                        onClick={() => setFormData({ ...formData, name })}
+                      >
+                        {name}
+                      </DropdownMenuItem>
+                    ))}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        const newSource = prompt("Enter a new source name:");
+                        if (newSource) setFormData({ ...formData, name: newSource });
+                      }}
+                    >
+                      Add new source
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -698,22 +752,22 @@ const Page = () => {
                   value={formData.email}
                   onChange={handleFormChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your email"
+                  placeholder="Enter email"
                   required
                 />
               </div>
               <div>
                 <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-1">
-                  Mobile No
+                  Product Affected
                 </label>
                 <input
-                  type="tel"
+                  type="text"
                   id="mobile"
                   name="mobile"
                   value={formData.mobile}
                   onChange={handleFormChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter your mobile number"
+                  placeholder="Enter affected product"
                   required
                 />
               </div>
