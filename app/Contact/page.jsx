@@ -39,7 +39,7 @@ const ContactPage = () => {
     <div className={`${plusJakartaSans.className} h-full bg-slate-200 lg:pl-4 lg:pr-4  mt-3`}>
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-blue-700 mb-2 text-center">Get in Touch</h1>
-        <p className="text-lg text-black mb-6 text-center">We are eager to hear from you. Feel free to reach out!</p>
+        <p className="text-lg text-black mb-6 text-center">We are eager to hear from you , Feel free to reach out!</p>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4" style={{ height: "calc(100vh - 200px)", overflow: "auto" }}>
           {/* Contact Information */}
