@@ -206,16 +206,18 @@ const Page = () => {
           </button>
           <div className="font-extrabold text-xl">
             {currentView === "dashboard"
-              ? "OVERVIEW"
-              : currentView === "vulnerability"
-              ? "VULNERABILITIES"
-              : "ALERTS"}
+              ? "VULNERABILITY"
+              : currentView === "ALERTS"
+              ? "ALERTS"
+              : currentView === "Contact"
+              ? "CONTACT US " 
+            : " ALERTS"}
           </div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="lg:relative lg:w-[65%] hidden lg:block "
+            className="lg:relative lg:w-[55%] hidden lg:block "
           >
             <motion.div
               whileHover={{ scale: 1.2 }}
