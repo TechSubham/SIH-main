@@ -42,7 +42,7 @@ const ContactPage = () => {
         <p className="text-lg text-black mb-6 text-center">We are eager to hear from you , Feel free to reach out!</p>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4" style={{ height: "calc(100vh - 200px)", overflow: "auto" }}>
-          {/* Contact Information */}
+
           <Card className="lg:col-span-1 p-4 shadow-xl rounded-xl bg-blue-50 border-2 border-blue-500">
             <CardContent>
               <h2 className="text-xl font-semibold mb-4 lg:text-center text-blue-700">Contact Information</h2>
@@ -85,7 +85,6 @@ const ContactPage = () => {
             </CardContent> 
           </Card>
 
-          {/* Contact Form */}
           <Card className="lg:col-span-2 p-6 shadow-xl rounded-xl  bg-white border-2 border-blue-500">
             <CardContent>
               <h2 className="text-2xl font-semibold mb-4 text-blue-700 text-center">Send us a message</h2>
