@@ -131,8 +131,8 @@ const Page = () => {
             <li
               className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
                 currentView === "dashboard"
-                  ? "bg-blue-500 text-white"
-                  : "text-gray-600 hover:bg-blue-500 hover:text-white"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 hover:bg-blue-600 hover:text-white"
               }`}
               onClick={() => setCurrentView("dashboard")}
             >
@@ -145,8 +145,8 @@ const Page = () => {
             <li
               className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
                 currentView === "vulnerability"
-                  ? "bg-blue-500 text-white"
-                  : "text-gray-600 hover:bg-blue-500 hover:text-white"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 hover:bg-blue-600 hover:text-white"
               }`}
               onClick={() => setCurrentView("vulnerability")}
             >
@@ -182,8 +182,8 @@ const Page = () => {
             <li
               className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
                 currentView === "Contact"
-                  ? "bg-blue-500 text-white"
-                  : "text-gray-600 hover:bg-blue-500 hover:text-white"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 hover:bg-blue-600 hover:text-white"
               }`}
               onClick={() => setCurrentView("Contact")}
             >
