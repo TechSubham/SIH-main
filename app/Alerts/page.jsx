@@ -188,7 +188,7 @@ const Page = () => {
   };
 
   return (
-    <div className={`${plusJakartaSans.className} h-full bg-slate-200 lg:pl-4 lg:pr-4 lg:mt-2 mt-3`}>
+    <div className={`${plusJakartaSans.className} h-full bg-slate-200 px-4 lg:mt-2 mt-3`}>
       <div className={`grid gap-4 ${isFormOpen ? "opacity-50 pointer-events-none" : ""}`}>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <Input
@@ -233,7 +233,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="border bg-white shadow-2xl rounded-3xl overflow-hidden" style={{ height: "calc(100vh - 200px)" }}>
+        <div className="border bg-white shadow-2xl rounded-[0.75rem] overflow-hidden" style={{ height: "calc(100vh - 200px)" }}>
           <div className="overflow-x-auto h-full">
             <div className="inline-block min-w-full align-middle">
               <div className="overflow-hidden">
@@ -374,18 +374,17 @@ const Page = () => {
               <div className="flex justify-end space-x-4 mt-6">
                 <Button
                   type="button"
+                  variant="destructive"
                   onClick={() => {
                     setIsFormOpen(false);
                     setEditingId(null);
                     setFormData({ name: "", email: "", mobile: "", date: "" });
-                  }}
-                  className="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400"
+                  }}                
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
                 >
                   {editingId ? "Update" : "Submit"}
                 </Button>

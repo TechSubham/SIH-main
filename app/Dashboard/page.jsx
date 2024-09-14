@@ -11,7 +11,8 @@ import {
   faBell,
   faCircleExclamation,
   faPhone,
-  faShieldHalved
+  faShieldHalved,
+  faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import Qubit from "../../public/Qubit.png";
 import Image from "next/image";
@@ -19,14 +20,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import Overview from "../Overview/page.jsx";
 import Vulnerability from "../Vulnerability/page.jsx";
 import Alert from "../Alerts/page.jsx";
-import Contact from "../Contact/page.jsx"
+import Contact from "../Contact/page.jsx";
 import { auth } from "../../firebaseConfig.js";
 import { signOut } from "firebase/auth";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
-import { Plus_Jakarta_Sans } from 'next/font/google';
-const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] });
-
+import { Plus_Jakarta_Sans } from "next/font/google";
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 const Page = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -103,7 +103,9 @@ const Page = () => {
   };
 
   return (
-    <div className={`${plusJakartaSans.className} grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-slate-200 rounded-lg overflow-hidden`}>
+    <div
+      className={`${plusJakartaSans.className} grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-slate-200 rounded-lg overflow-hidden`}
+    >
       <motion.div
         className={`fixed inset-y-0 left-0 transform lg:transform-none lg:static z-50 w-64 bg-white flex flex-col transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -117,37 +119,41 @@ const Page = () => {
             <FontAwesomeIcon icon={faTimes} className="w-6 h-6" />
           </button>
         </div>
-        <div className="relative bottom-4">
-          <Image src={Qubit} className="w-28 h-28 text-purple-800" />
-          <div className="font-extrabold text-2xl absolute top-10 left-24 text-blue-800">
+        <div className="relative bottom-4 flex justify-center items-center">
+          <Image src={Qubit} className="w-28 h-28 text-purple-800" alt="" />
+          <div className="font-extrabold text-2xl text-blue-800 -ml-6 pr-7">
             QUBIT
           </div>
         </div>
 
-        <div className="mt-6 px-3">
-          <div className="text-black font-semibold text-xl mb-4">Main</div>
-          
-          <ul className="space-y-4 ml-5">
-          <li
-              className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
+        <div className="mt-6 px-2">
+          <ul className="space-y-4 font-semibold">
+            <li
+              className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
                 currentView === "dashboard"
                   ? "bg-blue-500 text-white"
                   : "text-gray-600 hover:bg-blue-500 hover:text-white"
               }`}
               onClick={() => setCurrentView("dashboard")}
             >
-              <FontAwesomeIcon icon={faCircleExclamation} className="w-6 h-6 mr-3" />
+              <FontAwesomeIcon
+                icon={faCircleExclamation}
+                className="w-6 h-6 mr-3"
+              />
               <span>Vulnerability</span>
             </li>
             <li
-              className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
+              className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
                 currentView === "vulnerability"
                   ? "bg-blue-500 text-white"
                   : "text-gray-600 hover:bg-blue-500 hover:text-white"
               }`}
               onClick={() => setCurrentView("vulnerability")}
             >
-              <FontAwesomeIcon icon={faShieldHalved} className="w-6 h-6 mr-3" />
+              <FontAwesomeIcon
+                icon={faShieldHalved}
+                className="w-[22px] h-[22px] mr-3"
+              />
               <span>Alerts</span>
             </li>
             {/* <li
@@ -167,20 +173,21 @@ const Page = () => {
           </ul>
         </div>
 
-        <div className="mt-6 px-3">
-          <div className="text-black font-semibold text-xl mb-4 border "></div>
-          <ul className="space-y-3 ml-5">
+        <div className="mt-4 px-2">
+          <ul className="space-y-3 font-semibold">
             {/* <li className="flex items-center p-2 rounded-lg text-gray-600 hover:bg-blue-500 hover:cursor-pointer hover:text-white">
               <FontAwesomeIcon icon={faGear} className="w-6 h-6 mr-3" />
               <span>Settings</span>
             </li> */}
-            <li className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
+            <li
+              className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
                 currentView === "Contact"
                   ? "bg-blue-500 text-white"
                   : "text-gray-600 hover:bg-blue-500 hover:text-white"
               }`}
-              onClick={() => setCurrentView("Contact")}>
-              <FontAwesomeIcon icon={faPhone} className="w-6 h-6 mr-3" />
+              onClick={() => setCurrentView("Contact")}
+            >
+              <FontAwesomeIcon icon={faPhone} className="w-5 h-5 mr-3" />
               <span>Contact Us</span>
             </li>
           </ul>
@@ -188,10 +195,10 @@ const Page = () => {
         <div className="px-3 mt-auto mb-4">
           <button
             onClick={handleLogout}
-            className="flex relative  bottom-5 items-center justify-center w-full p-2 rounded-lg bg-red-500 text-white hover:bg-red-700 hover:text-white transition-colors duration-200"
+            className="flex relative font-semibold bottom-5 items-center justify-between w-full py-3 px-5 rounded-lg bg-red-500 text-white hover:bg-red-700 hover:text-white transition-colors duration-200"
           >
-            <FontAwesomeIcon icon={faSignOutAlt} className="w-8 h-8 mr-3" />
             <span>Logout</span>
+            <FontAwesomeIcon icon={faSignOut} className="w-4 h-4" />
           </button>
         </div>
       </motion.div>
@@ -210,8 +217,8 @@ const Page = () => {
               : currentView === "ALERTS"
               ? "ALERTS"
               : currentView === "Contact"
-              ? "CONTACT US " 
-            : " ALERTS"}
+              ? "CONTACT US "
+              : " ALERTS"}
           </div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -222,11 +229,11 @@ const Page = () => {
             <motion.div
               whileHover={{ scale: 1.2 }}
               transition={{ type: "spring", stiffness: 300 }}
-              className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+              className="absolute inset-y-0 left-0 flex items-center ml-[14px] pointer-events-none z-50"
             >
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
-                className="w-5 h-5 text-gray-500"
+                className="w-4 h-4 text-gray-500"
               />
             </motion.div>
             <motion.input
@@ -234,24 +241,18 @@ const Page = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               whileFocus={{
-                scale: 1.02,
+                scale: 1.0,
                 boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.3)",
               }}
               type="text"
               className="w-full p-2 pl-12 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-800 focus:border-transparent"
               placeholder="Search..."
             />
-          </motion.div>
-          <div className="relative right-72 md:relative md:left-1">
-            <FontAwesomeIcon
-              icon={faBell}
-              className="w-5 h-6 text-gray-500 hidden lg:block"
-            />
-          </div>
+          </motion.div>         
           <div className="relative" ref={dropdownRef}>
             {user ? (
               <>
-                <div 
+                <div
                   className="flex items-center space-x-4 cursor-pointer"
                   onClick={toggleDropdown}
                 >
@@ -278,7 +279,9 @@ const Page = () => {
                     >
                       <div className="px-4 py-2 text-sm text-gray-700">
                         <div className="font-medium">{user.name}</div>
-                        <div className="text-xs text-gray-500">{user.email}</div>
+                        <div className="text-xs text-gray-500">
+                          {user.email}
+                        </div>
                       </div>
                       <hr className="my-1" />
                       <button
@@ -296,7 +299,7 @@ const Page = () => {
             )}
           </div>
         </div>
-        {renderView()}
+        <div>{renderView()}</div>
       </div>
     </div>
   );
