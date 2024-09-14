@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   return (
-    <div className=" font-serif min-h-screen bg-gray-200 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <div className="relative flex w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
         {/* Login Form Section */}
         <motion.div
