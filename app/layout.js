@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "SpreadX | Qubit",
-  description: "Spreadx By Qubit",
+  title: "Real Time Vulnerability Reporting System | Qubit",
+  description: "Real Time Vulnerability Reporting System | Qubit",
 };
 
 export default function RootLayout({ children }) {
