@@ -53,7 +53,7 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const sourceNames = ["All","QNAP Systems, Inc", "IBM", "Wordfence", "Microsoft"];
+  const sourceNames = ["All","QNAP Systems, Inc", "IBM", "WordFence", "Microsoft"];
 
   const filteredData = useMemo(() => {
     if (selectedSource === "All") return data;
