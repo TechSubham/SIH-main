@@ -23,7 +23,7 @@ import Alert from "../Alerts/page.jsx";
 import Contact from "../Contact/page.jsx";
 import { auth } from "../../firebaseConfig.js";
 import { signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import { Plus_Jakarta_Sans } from "next/font/google";
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
@@ -45,6 +45,7 @@ const Page = () => {
         });
       } else {
         setUser(null);
+        router.replace("/Login");
       }
     });
 

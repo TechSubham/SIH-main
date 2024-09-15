@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,8 +33,8 @@ import {
 import { MoreHorizontal, ChevronDown } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Plus_Jakarta_Sans } from 'next/font/google';
-const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] });
+import { Plus_Jakarta_Sans } from "next/font/google";
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 const Page = () => {
   const [sorting, setSorting] = useState([]);
@@ -42,25 +42,90 @@ const Page = () => {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [data, setData] = useState(Qubit_data);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    mobile: "",
-    date: "",
   });
+
   const [editingId, setEditingId] = useState(null);
   const [selectedSource, setSelectedSource] = useState("All");
 
-  const sourceNames = useMemo(() => {
-    const names = ["All", ...new Set(data.map(item => item.name))];
-    return names.sort();
-  }, [data]);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const sourceNames = ["All","QNAP Systems, Inc", "IBM", "Wordfence", "Microsoft"];
 
   const filteredData = useMemo(() => {
     if (selectedSource === "All") return data;
-    return data.filter(item => item.name === selectedSource);
+    return data.filter((item) => item.source === selectedSource);
   }, [data, selectedSource]);
+
+  const addEmail = async () => {
+    try {
+      const response = await fetch("/api/sources", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, source: formData.name }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        console.log("Email added successfully");
+        fetchAllSources();
+      }
+    } catch (error) {
+      console.error("Error adding email:", error);
+    }
+  };
+
+  const deleteEmail = async (emailToDelete, sourceName) => {
+    try {
+      const response = await fetch("/api/sources", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailToDelete, source: sourceName }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        console.log("Email deleted successfully");
+        fetchAllSources();
+      }
+    } catch (error) {
+      console.error("Error deleting email:", error);
+    }
+  };
+
+  const fetchAllSources = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/sources");
+      const result = await response.json();
+      if (result.success) {
+        setData(result.emails);
+      }
+    } catch (error) {
+      console.error("Error fetching sources:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllSources();
+  }, []);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    await addEmail();
+    setFormData({ name: "", email: "" });
+    setIsFormOpen(false);
+    setEditingId(null);
+  };
+
+  const handleEdit = (rowData) => {
+    setFormData({ name: rowData.name, email: rowData.email });
+    setEditingId(rowData.id);
+    setIsFormOpen(true);
+  };
 
   const columns = [
     {
@@ -83,7 +148,7 @@ const Page = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "name",
+      accessorKey: "source",
       header: () => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -107,15 +172,14 @@ const Page = () => {
     {
       accessorKey: "email",
       header: "Email",
+      cell: ({ row }) => {
+        return (
+          <div>
+            <p>{row.getValue("email")}</p>
+          </div>
+        );
+      },
     },
-    // {
-    //   accessorKey: "date",
-    //   header: "Date",
-    // },
-    // {
-    //   accessorKey: "Products Affected",
-    //   header: "Products Affected",
-    // },
     {
       id: "actions",
       cell: ({ row }) => {
@@ -129,8 +193,10 @@ const Page = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleEdit(rowData)}>
-                Edit
+              <DropdownMenuItem
+                onClick={() => deleteEmail(rowData.email, rowData.source)}
+              >
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -162,236 +228,241 @@ const Page = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("Qubit_data"));
-    if (storedData) {
-      setData(storedData);
-    }
-  }, []);
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const newData = editingId
-      ? data.map((item) => (item.id === editingId ? { ...formData, id: editingId } : item))
-      : [...data, { ...formData, id: Date.now() }];
-    setData(newData);
-    localStorage.setItem("Qubit_data", JSON.stringify(newData));
-    setFormData({ name: "", email: "", mobile: "", date: "" });
-    setIsFormOpen(false);
-    setEditingId(null);
-  };
-
-  const handleEdit = (rowData) => {
-    setFormData(rowData);
-    setEditingId(rowData.id);
-    setIsFormOpen(true);
-  };
-
   return (
-    <div className={`${plusJakartaSans.className} h-full bg-slate-200 px-4 lg:mt-2 mt-3`}>
-      <div className={`grid gap-4 ${isFormOpen ? "opacity-50 pointer-events-none" : ""}`}>
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Input
-            placeholder="Filter emails"
-            value={table.getColumn("email")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <div className="flex gap-2">
-            <Button onClick={() => setIsFormOpen(true)} className="whitespace-nowrap">
-              <FontAwesomeIcon icon={faPlus} className="w-4 mr-2" />
-              Add
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Columns
+    <div
+      className={`${plusJakartaSans.className} h-full bg-slate-200 px-4 lg:mt-2 mt-3`}
+    >
+      {isLoading ? (
+        <div className="flex justify-center items-center h-full">
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <>
+          <div
+            className={`grid gap-4 ${
+              isFormOpen ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <Input
+                placeholder="Filter emails"
+                value={table.getColumn("email")?.getFilterValue() ?? ""}
+                onChange={(event) =>
+                  table.getColumn("email")?.setFilterValue(event.target.value)
+                }
+                className="max-w-sm"
+              />
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setIsFormOpen(true)}
+                  className="whitespace-nowrap"
+                >
+                  <FontAwesomeIcon icon={faPlus} className="w-4 mr-2" />
+                  Add
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-
-        <div className="border bg-white shadow-2xl rounded-[0.75rem] overflow-hidden" style={{ height: "calc(100vh - 200px)" }}>
-          <div className="overflow-x-auto h-full">
-            <div className="inline-block min-w-full align-middle">
-              <div className="overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                          <TableHead key={header.id} className="bg-blue-600 text-white sticky top-0 z-10">
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
-                          </TableHead>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableHeader>
-                  <TableBody>
-                    {table.getRowModel().rows?.length ? (
-                      table.getRowModel().rows.map((row) => (
-                        <TableRow
-                          key={row.id}
-                          data-state={row.getIsSelected() && "selected"}
-                        >
-                          {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell
-                          colSpan={columns.length}
-                          className="h-24 text-center"
-                        >
-                          No results.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-gray-500">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {isFormOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-          <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-2xl">
-            <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-              {editingId ? "Edit User" : "Add User"}
-            </h2>
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Source Name
-                </label>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full justify-between">
-                      {formData.name || "Select a source"}
-                      <ChevronDown className="ml-2 h-4 w-4" />
+                    <Button variant="outline" className="ml-auto">
+                      Columns
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
-                    <DropdownMenuLabel>Select a source</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    {sourceNames.filter(name => name !== "All").map((name) => (
-                      <DropdownMenuItem
-                        key={name}
-                        onClick={() => setFormData({ ...formData, name })}
-                      >
-                        {name}
-                      </DropdownMenuItem>
-                    ))}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => {
-                        const newSource = prompt("Enter a new source name:");
-                        if (newSource) setFormData({ ...formData, name: newSource });
-                      }}
-                    >
-                      Add new source
-                    </DropdownMenuItem>
+                  <DropdownMenuContent align="end">
+                    {table
+                      .getAllColumns()
+                      .filter((column) => column.getCanHide())
+                      .map((column) => {
+                        return (
+                          <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={(value) =>
+                              column.toggleVisibility(!!value)
+                            }
+                          >
+                            {column.id}
+                          </DropdownMenuCheckboxItem>
+                        );
+                      })}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter email"
-                  required
-                />
+            </div>
+
+            <div
+              className="border bg-white shadow-2xl rounded-[0.75rem] overflow-hidden"
+              style={{ height: "calc(100vh - 200px)" }}
+            >
+              <div className="overflow-x-auto h-full">
+                <div className="inline-block min-w-full align-middle">
+                  <div className="overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                          <TableRow key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => (
+                              <TableHead
+                                key={header.id}
+                                className="bg-blue-600 text-white sticky top-0 z-10"
+                              >
+                                {header.isPlaceholder
+                                  ? null
+                                  : flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext()
+                                    )}
+                              </TableHead>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableHeader>
+                      <TableBody>
+                        {table.getRowModel().rows &&
+                        table.getRowModel().rows.length ? (
+                          table.getRowModel().rows.map((row) => (
+                            <TableRow
+                              key={row.id}
+                              data-state={row.getIsSelected() && "selected"}
+                            >
+                              {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id}>
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                  )}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell
+                              colSpan={columns.length}
+                              className="h-24 text-center"
+                            >
+                              No results.
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
               </div>
-              
-              <div className="flex justify-end space-x-4 mt-6">
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-sm text-gray-500">
+                {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                {table.getFilteredRowModel().rows.length} row(s) selected.
+              </div>
+              <div className="flex gap-2">
                 <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => {
-                    setIsFormOpen(false);
-                    setEditingId(null);
-                    setFormData({ name: "", email: "", mobile: "", date: "" });
-                  }}                
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
                 >
-                  Cancel
+                  Previous
                 </Button>
                 <Button
-                  type="submit"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
                 >
-                  {editingId ? "Update" : "Submit"}
+                  Next
                 </Button>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+
+          {isFormOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+              <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-2xl">
+                <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+                  {editingId ? "Edit User" : "Add User"}
+                </h2>
+                <form onSubmit={handleFormSubmit} className="space-y-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Source Name
+                    </label>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-between"
+                        >
+                          {formData.name || "Select a source"}
+                          <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-full">
+                        <DropdownMenuLabel>Select a source</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {sourceNames
+                          .filter((name) => name !== "All")
+                          .map((name) => (
+                            <DropdownMenuItem
+                              key={name}
+                              onClick={() => setFormData({ ...formData, name })}
+                            >
+                              {name}
+                            </DropdownMenuItem>
+                          ))}
+                        <DropdownMenuSeparator />
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleFormChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      placeholder="Enter email"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex justify-end space-x-4 mt-6">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => {
+                        setIsFormOpen(false);
+                        setEditingId(null);
+                        setFormData({
+                          name: "",
+                          email: "",
+                          mobile: "",
+                          date: "",
+                        });
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit">
+                      {editingId ? "Update" : "Submit"}
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
