@@ -14,27 +14,21 @@ import {
   faShieldHalved,
   faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
-import Qubit from "../../public/Qubit.png";
+import Qubit from "@/public/Qubit.png";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import Overview from "../Overview/page.jsx";
-import Vulnerability from "../Vulnerability/page.jsx";
-import Alert from "../Alerts/page.jsx";
-import Contact from "../Contact/page.jsx";
-import { auth } from "../../firebaseConfig.js";
+import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
-import { Plus_Jakarta_Sans } from "next/font/google";
-const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
-
-const Page = () => {
+const Page = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [currentView, setCurrentView] = useState("dashboard");
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("");
   const dropdownRef = useRef(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -63,6 +57,10 @@ const Page = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setCurrentView(pathname.slice(10));
+  }, [pathname]);
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -88,27 +86,15 @@ const Page = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const renderView = () => {
-    switch (currentView) {
-      case "dashboard":
-        return <Vulnerability />;
-      case "vulnerability":
-        return <Alert />;
-      case "alert":
-        return <Overview />;
-      case "Contact":
-        return <Contact />;
-      default:
-        return <Overview />;
-    }
-  };
-
   return (
-    <div
-      className={`${plusJakartaSans.className} grid grid-cols-1 lg:grid-cols-[256px_1fr] h-full lg:h-screen bg-slate-200 rounded-lg overflow-hidden`}
-    >
+    <div className={`flex h-screen bg-slate-200 rounded-lg overflow-hidden`}>
+      <div
+        className={`${
+          isSidebarOpen ? "block" : "hidden"
+        } absolute h-screen w-screen top-0 left-0 bg-black/40 z-40`}
+      ></div>
       <motion.div
-        className={`fixed inset-y-0 left-0 transform lg:transform-none lg:static z-50 w-64 bg-white flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 transform lg:transform-none lg:static z-50 min-w-full sm:min-w-64 bg-white flex flex-col transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
@@ -120,9 +106,9 @@ const Page = () => {
             <FontAwesomeIcon icon={faTimes} className="w-6 h-6" />
           </button>
         </div>
-        <div className="relative bottom-4 flex justify-center items-center">
-          <Image src={Qubit} className="w-28 h-28 text-purple-800" alt="" />
-          <div className="font-extrabold text-2xl text-blue-800 -ml-6 pr-7">
+        <div className="relative bottom-4 flex justify-center items-center py-10 gap-1">
+          <Image src={Qubit} className="w-14 h-14 text-purple-800" alt="" />
+          <div className="font-extrabold text-2xl text-blue-800 pr-7">
             QUBIT
           </div>
         </div>
@@ -131,11 +117,22 @@ const Page = () => {
           <ul className="space-y-4 font-semibold">
             <li
               className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
-                currentView === "dashboard"
+                currentView === ""
                   ? "bg-blue-600 text-white"
                   : "text-gray-600 hover:bg-blue-600 hover:text-white"
               }`}
-              onClick={() => setCurrentView("dashboard")}
+              onClick={() => router.push("/Dashboard")}
+            >
+              <FontAwesomeIcon icon={faChartSimple} className="w-6 h-6 mr-3" />
+              <span>Overview</span>
+            </li>
+            <li
+              className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
+                currentView === "/Vulnerability"
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 hover:bg-blue-600 hover:text-white"
+              }`}
+              onClick={() => router.push("/Dashboard/Vulnerability")}
             >
               <FontAwesomeIcon
                 icon={faCircleExclamation}
@@ -145,11 +142,11 @@ const Page = () => {
             </li>
             <li
               className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
-                currentView === "vulnerability"
+                currentView === "/Alerts"
                   ? "bg-blue-600 text-white"
                   : "text-gray-600 hover:bg-blue-600 hover:text-white"
               }`}
-              onClick={() => setCurrentView("vulnerability")}
+              onClick={() => router.push("/Dashboard/Alerts")}
             >
               <FontAwesomeIcon
                 icon={faShieldHalved}
@@ -157,20 +154,6 @@ const Page = () => {
               />
               <span>Alerts</span>
             </li>
-            {/* <li
-              className={`flex items-center p-2 rounded-lg hover:cursor-pointer ${
-                currentView === "alert"
-                  ? "bg-blue-500 text-white"
-                  : "text-gray-600 hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => setCurrentView("alert")}
-            >
-              <FontAwesomeIcon
-                icon={faChartSimple}
-                className="w-6 h-6 mr-3"
-              />
-              <span>Overview</span>
-            </li> */}
           </ul>
         </div>
 
@@ -182,11 +165,11 @@ const Page = () => {
             </li> */}
             <li
               className={`flex items-center p-3 rounded-[0.5rem] hover:cursor-pointer ${
-                currentView === "Contact"
+                currentView === "/Contact"
                   ? "bg-blue-600 text-white"
                   : "text-gray-600 hover:bg-blue-600 hover:text-white"
               }`}
-              onClick={() => setCurrentView("Contact")}
+              onClick={() => router.push("/Dashboard/Contact")}
             >
               <FontAwesomeIcon icon={faPhone} className="w-5 h-5 mr-3" />
               <span>Contact Us</span>
@@ -204,7 +187,7 @@ const Page = () => {
         </div>
       </motion.div>
 
-      <div className="grid grid-rows-[auto_1fr] lg:ml-0">
+      <div className="flex flex-col lg:ml-0 flex-grow">
         <div className="bg-white p-4 h-16 flex justify-between items-center space-x-5">
           <button
             className="lg:hidden text-gray-600 focus:outline-none"
@@ -212,29 +195,23 @@ const Page = () => {
           >
             <FontAwesomeIcon icon={faBars} className="w-6 h-6" />
           </button>
-          <div className="font-extrabold text-xl">
-            {currentView === "dashboard"
-              ? "VULNERABILITY"
-              : currentView === "ALERTS"
-              ? "ALERTS"
-              : currentView === "Contact"
-              ? "CONTACT US "
-              : " ALERTS"}
+          <div className="font-extrabold text-xl uppercase">
+            {currentView === "" ? "Overview" : currentView.slice(1)}
           </div>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="lg:relative lg:w-[55%] hidden lg:block "
+            className="hidden lg:block flex-grow px-16 "
           >
             <motion.div
               whileHover={{ scale: 1.2 }}
               transition={{ type: "spring", stiffness: 300 }}
-              className="absolute inset-y-0 left-0 flex items-center ml-[14px] pointer-events-none z-50"
+              className="relative pointer-events-none z-50"
             >
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
-                className="w-4 h-4 text-gray-500"
+                className="w-4 h-4 text-gray-500 absolute top-3 left-4"
               />
             </motion.div>
             <motion.input
@@ -246,10 +223,10 @@ const Page = () => {
                 boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.3)",
               }}
               type="text"
-              className="w-full p-2 pl-12 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-800 focus:border-transparent"
+              className="w-full p-2 pl-12 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm"
               placeholder="Search..."
             />
-          </motion.div>         
+          </motion.div>
           <div className="relative" ref={dropdownRef}>
             {user ? (
               <>
@@ -300,7 +277,9 @@ const Page = () => {
             )}
           </div>
         </div>
-        <div>{renderView()}</div>
+        <div className="p-4 bg-slate-200 overflow-auto flex-1 flex-grow">
+          {children}
+        </div>
       </div>
     </div>
   );

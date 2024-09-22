@@ -1,16 +1,17 @@
-"use client"; 
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLock, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
+"use client";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "../../lib/firebaseConfig"; 
-import { signInWithEmailAndPassword } from "firebase/auth";
-import Image from "next/image";
-import background2 from "../../public/login_bg.jpg";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "@/lib/firebaseConfig";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import background from "@/public/signup.avif";
+import Image from "next/image";
 
-const Login = () => {
+export default function SignUp() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,26 +20,24 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === "" || password === "") {
-      setErrorMessage("Please enter both email and password.");
+    if (name === "" || email === "" || password === "") {
+      setErrorMessage("Please fill in all fields.");
       return;
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log("User logged in:", user);
+      await updateProfile(user, { displayName: name });
       router.push("/Dashboard");
     } catch (error) {
-      console.error("Error logging in:", error.message);
-      setErrorMessage("Invalid email or password.");
+      setErrorMessage(error.message);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <div className="relative flex w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-        {/* Login Form Section */}
         <motion.div
           className="w-full lg:w-1/2 p-8 flex flex-col justify-center"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -53,7 +52,7 @@ const Login = () => {
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="text-5xl text-blue-600">
-              <FontAwesomeIcon icon={faSignInAlt} className="text-blue-500" />
+              <FontAwesomeIcon icon={faUser} className="text-blue-500" />
             </div>
           </motion.div>
           <motion.h2
@@ -62,11 +61,8 @@ const Login = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            Welcome!
+            Create an Account
           </motion.h2>
-          <p className="text-center text-gray-500 mb-6">
-            Sign in to your account
-          </p>
           {errorMessage && (
             <motion.div
               className="mb-4 text-red-500 text-center"
@@ -85,6 +81,25 @@ const Login = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="mb-4">
+              <label className="block text-gray-600 text-sm md:text-base mb-2" htmlFor="name">
+                Name
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="w-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                />
+              </div>
+            </div>
+            <div className="mb-4">
               <label className="block text-gray-600 text-sm md:text-base mb-2" htmlFor="email">
                 Email
               </label>
@@ -98,7 +113,7 @@ const Login = () => {
                   required
                 />
                 <FontAwesomeIcon
-                  icon={faUser}
+                  icon={faEnvelope}
                   className="w-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 />
               </div>
@@ -122,28 +137,13 @@ const Login = () => {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember-me"
-                  className="w-4 h-4 text-blue-600 form-checkbox"
-                />
-                <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
-                  Remember me?
-                </label>
-              </div>
-              <Link href="/SignUp" className="text-sm text-blue-600 hover:underline">
-                Sign Up
-              </Link>
-            </div>
             <motion.button
               className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
             >
-              Login
+              Create Account
             </motion.button>
           </motion.form>
           <motion.div
@@ -152,13 +152,12 @@ const Login = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <Link href="/Login/password-reset" className="text-blue-600 hover:underline">
-              Forgot Password?
+            <Link href="/Login" className="text-blue-600 hover:underline">
+              Already have an account? Log in
             </Link>
           </motion.div>
         </motion.div>
 
-        {/* Background Image Section */}
         <motion.div
           className="hidden lg:block w-1/2 relative"
           initial={{ x: '100%', opacity: 0 }}
@@ -167,8 +166,8 @@ const Login = () => {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <Image
-            src={background2}
-            alt="Login Background"
+            src={background}
+            alt="Signup Background"
             layout="fill"
             objectFit="cover"
           />
@@ -176,6 +175,4 @@ const Login = () => {
       </div>
     </div>
   );
-};
-
-export default Login;
+}

@@ -1,17 +1,16 @@
-"use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../lib/firebaseConfig";
+"use client"; 
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faLock, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import background from "../../public/signup.avif";
+import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebaseConfig"; 
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
+import background2 from "@/public/login_bg.jpg";
+import { motion } from "framer-motion";
 
-export default function SignUp() {
-  const [name, setName] = useState("");
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,24 +19,26 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (name === "" || email === "" || password === "") {
-      setErrorMessage("Please fill in all fields.");
+    if (email === "" || password === "") {
+      setErrorMessage("Please enter both email and password.");
       return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      await updateProfile(user, { displayName: name });
+      console.log("User logged in:", user);
       router.push("/Dashboard");
     } catch (error) {
-      setErrorMessage(error.message);
+      console.error("Error logging in:", error.message);
+      setErrorMessage("Invalid email or password.");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
       <div className="relative flex w-full max-w-4xl bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+        {/* Login Form Section */}
         <motion.div
           className="w-full lg:w-1/2 p-8 flex flex-col justify-center"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -52,7 +53,7 @@ export default function SignUp() {
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="text-5xl text-blue-600">
-              <FontAwesomeIcon icon={faUser} className="text-blue-500" />
+              <FontAwesomeIcon icon={faSignInAlt} className="text-blue-500" />
             </div>
           </motion.div>
           <motion.h2
@@ -61,8 +62,11 @@ export default function SignUp() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            Create an Account
+            Welcome!
           </motion.h2>
+          <p className="text-center text-gray-500 mb-6">
+            Sign in to your account
+          </p>
           {errorMessage && (
             <motion.div
               className="mb-4 text-red-500 text-center"
@@ -81,25 +85,6 @@ export default function SignUp() {
             transition={{ duration: 0.5 }}
           >
             <div className="mb-4">
-              <label className="block text-gray-600 text-sm md:text-base mb-2" htmlFor="name">
-                Name
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-                <FontAwesomeIcon
-                  icon={faUser}
-                  className="w-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                />
-              </div>
-            </div>
-            <div className="mb-4">
               <label className="block text-gray-600 text-sm md:text-base mb-2" htmlFor="email">
                 Email
               </label>
@@ -113,7 +98,7 @@ export default function SignUp() {
                   required
                 />
                 <FontAwesomeIcon
-                  icon={faEnvelope}
+                  icon={faUser}
                   className="w-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                 />
               </div>
@@ -137,13 +122,28 @@ export default function SignUp() {
                 />
               </div>
             </div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  className="w-4 h-4 text-blue-600 form-checkbox"
+                />
+                <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
+                  Remember me?
+                </label>
+              </div>
+              <Link href="/SignUp" className="text-sm text-blue-600 hover:underline">
+                Sign Up
+              </Link>
+            </div>
             <motion.button
               className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
             >
-              Create Account
+              Login
             </motion.button>
           </motion.form>
           <motion.div
@@ -152,12 +152,13 @@ export default function SignUp() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <Link href="/Login" className="text-blue-600 hover:underline">
-              Already have an account? Log in
+            <Link href="/Login/password-reset" className="text-blue-600 hover:underline">
+              Forgot Password?
             </Link>
           </motion.div>
         </motion.div>
 
+        {/* Background Image Section */}
         <motion.div
           className="hidden lg:block w-1/2 relative"
           initial={{ x: '100%', opacity: 0 }}
@@ -166,8 +167,8 @@ export default function SignUp() {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <Image
-            src={background}
-            alt="Signup Background"
+            src={background2}
+            alt="Login Background"
             layout="fill"
             objectFit="cover"
           />
@@ -175,4 +176,6 @@ export default function SignUp() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

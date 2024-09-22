@@ -3,10 +3,10 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import GaugeChart from "../public/gauge_example2.png";
-import BarChart from "../public/BarChart.jpg";
-import Piechart from "../public/PieChart.jpg";
-import Qubit from "../public/Qubit.png";
+import GaugeChart from "@/public/gauge_example2.png";
+import BarChart from "@/public/BarChart.jpg";
+import Piechart from "@/public/PieChart.jpg";
+import Qubit from "@/public/Qubit.png";
 import Link from "next/link";
 import { BarChart3, ArrowUpRight, Database, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";

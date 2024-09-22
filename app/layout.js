@@ -1,7 +1,7 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import "@/app/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Real Time Vulnerability Reporting System | Qubit",

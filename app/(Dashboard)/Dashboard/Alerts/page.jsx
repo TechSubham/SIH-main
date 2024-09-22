@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import Qubit_data from "../../data/dummy_email_data.json";
 import {
   Table,
   TableBody,
@@ -33,11 +33,11 @@ import {
 import { MoreHorizontal, ChevronDown } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Plus_Jakarta_Sans } from "next/font/google";
-const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
+import { auth } from "@/lib/firebaseConfig";
 
 const Page = () => {
   const [sorting, setSorting] = useState([]);
+  const [user, setUser] = useState(null);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
@@ -53,7 +53,13 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const sourceNames = ["All","QNAP Systems, Inc", "IBM", "WordFence", "Microsoft"];
+  const sourceNames = [
+    "All",
+    "QNAP Systems, Inc",
+    "IBM",
+    "WordFence",
+    "Microsoft",
+  ];
 
   const filteredData = useMemo(() => {
     if (selectedSource === "All") return data;
@@ -65,7 +71,7 @@ const Page = () => {
       const response = await fetch("/api/sources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, source: formData.name }),
+        body: JSON.stringify({ email: user?.email, source: formData.name }),
       });
       const result = await response.json();
       if (result.success) {
@@ -82,7 +88,7 @@ const Page = () => {
       const response = await fetch("/api/sources", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailToDelete, source: sourceName }),
+        body: JSON.stringify({ email: user?.email, source: sourceName }),
       });
       const result = await response.json();
       if (result.success) {
@@ -100,7 +106,7 @@ const Page = () => {
       const response = await fetch("/api/sources");
       const result = await response.json();
       if (result.success) {
-        setData(result.emails);
+        setData(result.emails.filter((item) => item.email === user?.email));
       }
     } catch (error) {
       console.error("Error fetching sources:", error);
@@ -110,7 +116,25 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchAllSources();
+    if(user){
+      fetchAllSources();
+    }
+  },[user]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser({
+          name: currentUser.displayName || "User",
+          email: currentUser.email,
+        });
+      } else {
+        setUser(null);
+        router.replace("/Login");
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const handleFormSubmit = async (e) => {
@@ -152,7 +176,7 @@ const Page = () => {
       header: () => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-full justify-start">
+            <Button variant="ghost" className="h-8 w-fit justify-start">
               Source Name <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -229,9 +253,7 @@ const Page = () => {
   };
 
   return (
-    <div
-      className={`${plusJakartaSans.className} h-full bg-slate-200 px-4 lg:mt-2 mt-3`}
-    >
+    <div className={`h-full bg-slate-200`}>
       {isLoading ? (
         <div className="flex justify-center items-center h-full">
           <p>Loading...</p>
@@ -239,7 +261,7 @@ const Page = () => {
       ) : (
         <>
           <div
-            className={`grid gap-4 ${
+            className={`grid h-full gap-4 ${
               isFormOpen ? "opacity-50 pointer-events-none" : ""
             }`}
           >
@@ -289,64 +311,63 @@ const Page = () => {
               </div>
             </div>
 
-            <div
-              className="border bg-white shadow-2xl rounded-[0.75rem] overflow-hidden"
-              style={{ height: "calc(100vh - 200px)" }}
-            >
-              <div className="overflow-x-auto h-full">
-                <div className="inline-block min-w-full align-middle">
-                  <div className="overflow-hidden">
-                    <Table>
-                      <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                          <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => (
-                              <TableHead
-                                key={header.id}
-                                className="bg-blue-600 text-white sticky top-0 z-10"
-                              >
-                                {header.isPlaceholder
-                                  ? null
-                                  : flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext()
-                                    )}
-                              </TableHead>
+            <div className="border bg-white shadow-2xl rounded-[0.75rem] overflow-hidden flex-1 h-full">
+              <div className="h-full min-w-full flex flex-col">
+                <div className="overflow-x-auto overflow-y-hidden">
+                  <Table>
+                    <TableHeader>
+                      {table.getHeaderGroups().map((headerGroup) => (
+                        <TableRow key={headerGroup.id}>
+                          {headerGroup.headers.map((header) => (
+                            <TableHead
+                              key={header.id}
+                              className="bg-blue-600 text-white sticky top-0 z-10"
+                            >
+                              {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                  )}
+                            </TableHead>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableHeader>
+                  </Table>
+                </div>
+                <div className="flex-grow overflow-y-scroll">
+                  <Table>
+                    <TableBody>
+                      {table.getRowModel().rows &&
+                      table.getRowModel().rows.length ? (
+                        table.getRowModel().rows.map((row) => (
+                          <TableRow
+                            key={row.id}
+                            data-state={row.getIsSelected() && "selected"}
+                          >
+                            {row.getVisibleCells().map((cell) => (
+                              <TableCell key={cell.id}>
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </TableCell>
                             ))}
                           </TableRow>
-                        ))}
-                      </TableHeader>
-                      <TableBody>
-                        {table.getRowModel().rows &&
-                        table.getRowModel().rows.length ? (
-                          table.getRowModel().rows.map((row) => (
-                            <TableRow
-                              key={row.id}
-                              data-state={row.getIsSelected() && "selected"}
-                            >
-                              {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
-                                  {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext()
-                                  )}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          ))
-                        ) : (
-                          <TableRow>
-                            <TableCell
-                              colSpan={columns.length}
-                              className="h-24 text-center"
-                            >
-                              No results.
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell
+                            colSpan={columns.length}
+                            className="h-24 text-center"
+                          >
+                            No results.
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
             </div>
@@ -381,7 +402,7 @@ const Page = () => {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
               <div className="bg-white w-full max-w-md max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-2xl">
                 <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-                  {editingId ? "Edit User" : "Add User"}
+                  {editingId ? "Edit Source" : "Add Source"}
                 </h2>
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   <div>
@@ -418,25 +439,6 @@ const Page = () => {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleFormChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-                      placeholder="Enter email"
-                      required
-                    />
-                  </div>
-
                   <div className="flex justify-end space-x-4 mt-6">
                     <Button
                       type="button"
