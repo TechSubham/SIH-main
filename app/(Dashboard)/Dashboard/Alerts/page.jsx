@@ -253,7 +253,7 @@ const Page = () => {
   };
 
   return (
-    <div className={`h-full bg-slate-200`}>
+    <div className={`h-full`}>
       {isLoading ? (
         <div className="flex justify-center items-center h-full">
           <p>Loading...</p>
@@ -261,7 +261,7 @@ const Page = () => {
       ) : (
         <>
           <div
-            className={`grid h-full gap-4 ${
+            className={`grid h-fit bg-white p-8 gap-8 ${
               isFormOpen ? "opacity-50 pointer-events-none" : ""
             }`}
           >

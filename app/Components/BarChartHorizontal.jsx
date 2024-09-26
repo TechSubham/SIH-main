@@ -38,7 +38,7 @@ const chartConfig = {
 
 export default function Component() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="text-xl font-semibold">Notified Vulnerabilities</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

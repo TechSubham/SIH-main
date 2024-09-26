@@ -42,7 +42,7 @@ const chartConfig = {
 
 export default function Component() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="text-xl font-semibold">Severity Analytics</CardTitle>
         <CardDescription>
