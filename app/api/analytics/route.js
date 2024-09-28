@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 
@@ -64,6 +64,7 @@ async function getSeverityAnalytics(collection, startDate) {
         published_date_parsed: {
           $dateFromString: {
             dateString: "$published_date",
+            format: "%d/%m/%Y",
           },
         },
       },
@@ -97,6 +98,7 @@ async function getMonthlyNotifications(collection, startDate) {
         published_date_parsed: {
           $dateFromString: {
             dateString: "$published_date",
+            format: "%d/%m/%Y",
           },
         },
       },
