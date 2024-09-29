@@ -34,6 +34,7 @@ import { MoreHorizontal, ChevronDown } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { auth } from "@/lib/firebaseConfig";
+import { set } from "mongoose";
 
 const Page = () => {
   const [sorting, setSorting] = useState([]);
@@ -88,7 +89,13 @@ const Page = () => {
     try {
       const response = await fetch("/api/sources");
       const result = await response.json();
-      setData(result);
+      const filteredResult = result.emails.filter(
+        (item) => item.email === user?.email
+      );
+      console.log(filteredResult, user?.email);
+      if (filteredResult.length > 0) {
+        setData({ emails: filteredResult });
+      }
     } catch (error) {
       console.error("Error fetching sources:", error);
     }
@@ -96,7 +103,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchAllSources();
-  }, []);
+  }, [user]);
 
   const addEmail = async () => {
     try {
@@ -232,7 +239,7 @@ const Page = () => {
                 View Products <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="w-[200px]">
               {rowProducts.map((product, index) => (
                 <DropdownMenuItem key={index}>{product}</DropdownMenuItem>
               ))}
@@ -463,9 +470,10 @@ const Page = () => {
                         {products?.map((name) => (
                           <DropdownMenuItem
                             key={name.source}
-                            onClick={() =>
-                              setFormData({ ...formData, name: name.source })
-                            }
+                            onClick={() => {
+                              setFormData({ ...formData, name: name.source });
+                              setSelectedProducts([]);
+                            }}
                           >
                             {name.source}
                           </DropdownMenuItem>
@@ -474,6 +482,7 @@ const Page = () => {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
+                  {/* Source Name dropdown remains unchanged */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Products
@@ -488,7 +497,7 @@ const Page = () => {
                           <ChevronDown className="ml-2 h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-full">
+                      <DropdownMenuContent className="w-full max-h-60 max-w-96 overflow-y-auto">
                         {products
                           .find((p) => p.source === formData.name)
                           ?.products.map((product, index) => (
@@ -502,12 +511,29 @@ const Page = () => {
                                     : prev.filter((p) => p !== product)
                                 );
                               }}
+                              className="truncate pr-6"
                             >
                               {product}
                             </DropdownMenuCheckboxItem>
                           ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
+                  </div>
+                  {/* Selected Products Display */}
+                  <div className="mt-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Selected Products
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProducts.map((product, index) => (
+                        <span
+                          key={index}
+                          className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full truncate max-w-[200px]"
+                        >
+                          {product}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <div className="flex justify-end space-x-4 mt-6">
                     <Button
