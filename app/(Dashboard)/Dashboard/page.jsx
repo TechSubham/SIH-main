@@ -65,7 +65,7 @@ const DashboardCards = () => {
         whileTap={{ scale: 0.95 }}
         className="bg-white p-1 text-black col-span-1 row-span-10 lg:col-span-3 lg:row-span-2"
       >
-        <RadialChart data={analyticalData?.sourceWiseVulnerability.sort((a, b) => b.vulnerabilitiesFound - a.vulnerabilitiesFound)}/>
+        <RadialChart data={analyticalData?.sourceWiseVulnerability?.sort((a, b) => b.vulnerabilitiesFound - a.vulnerabilitiesFound)}/>
       </motion.div>
     </motion.div>
   );

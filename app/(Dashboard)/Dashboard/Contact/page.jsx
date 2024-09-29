@@ -61,11 +61,11 @@ const ContactPage = () => {
             <div className="space-y-6">
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-blue-600" />
-                <p className="text-sm text-black">Qubithelp007@gmail.com</p>
+                <p className="text-sm text-black">ajayps04981@gmail.com</p>
               </div>
               <div className="flex items-center">
                 <Phone className="h-5 w-5 mr-2 text-blue-600" />
-                <p className="text-sm text-black">+91 7482479289</p>
+                <p className="text-sm text-black">+91 9257675123</p>
               </div>
               <div className="flex items-center">
                 <MapPin className="lg:h-8 lg:w-8 mr-2 text-blue-600" />
