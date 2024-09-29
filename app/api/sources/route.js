@@ -23,14 +23,22 @@ async function getConnectedClient() {
 
 export async function POST(request) {
   try {
-    const { email, source } = await request.json();
+    const { email, source, products } = await request.json();
     const client = await getConnectedClient();
     const database = client.db(db);
     const sources = database.collection("sources");
 
     const result = await sources.updateOne(
       { name: source },
-      { $addToSet: { emails: email } }
+      { 
+        $addToSet: { 
+          emails: {
+            email: email,
+            products: products
+          } 
+        } 
+      },
+      { upsert: true }
     );
 
     return new Response(JSON.stringify({ success: true, modified: result.modifiedCount > 0 }), {
@@ -55,7 +63,7 @@ export async function DELETE(request) {
 
     const result = await sources.updateOne(
       { name: source },
-      { $pull: { emails: email } }
+      { $pull: { emails: { email: email } } }
     );
 
     return new Response(JSON.stringify({ success: true, modified: result.modifiedCount > 0 }), {
@@ -72,31 +80,30 @@ export async function DELETE(request) {
 }
 
 export async function GET(request) {
-    try {
-      const client = await getConnectedClient();
-      const database = client.db(db);
-      const sources = database.collection("sources");
-  
-      // Fetch all documents in the collection
-      const result = await sources.find({}, { projection: { name: 1, emails: 1 } }).toArray();
-  
-      // Map through each document and its emails safely
-      const emailsList = result.flatMap(doc => 
-        (doc.emails || []).map(email => ({
-          source: doc.name,
-          email: email
-        }))
-      );
-  
-      return new Response(JSON.stringify({ success: true, emails: emailsList }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    } catch (error) {
-      console.error('Error in GET function:', error);
-      return new Response(JSON.stringify({ success: false, error: error.message }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+  try {
+    const client = await getConnectedClient();
+    const database = client.db(db);
+    const sources = database.collection("sources");
+
+    const result = await sources.find({}).toArray();
+
+    const emailsList = result.flatMap(doc => 
+      (doc.emails || []).map(email => ({
+        source: doc.name,
+        email: email.email,
+        products: email.products
+      }))
+    );
+
+    return new Response(JSON.stringify({ success: true, emails: emailsList }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error('Error in GET function:', error);
+    return new Response(JSON.stringify({ success: false, error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
+}

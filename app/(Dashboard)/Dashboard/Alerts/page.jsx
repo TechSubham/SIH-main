@@ -49,37 +49,74 @@ const Page = () => {
 
   const [editingId, setEditingId] = useState(null);
   const [selectedSource, setSelectedSource] = useState("All");
-
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const sourceNames = [
+  const all = new Set(["All"]);
+  const [data, setData] = useState({ emails: [] });
+  const [isLoading, setIsLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [sourceNames, setSourceNames] = useState([
     "All",
     "QNAP Systems, Inc",
     "IBM",
     "WordFence",
     "Microsoft",
-  ];
+  ]);
 
   const filteredData = useMemo(() => {
-    if (selectedSource === "All") return data;
-    return data.filter((item) => item.source === selectedSource);
+    if (selectedSource === "All") return data?.emails;
+    return data?.emails.filter((item) => item.source === selectedSource);
   }, [data, selectedSource]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("/api/products");
+      const result = await response.json();
+      setProducts(result);
+      result.map((product) => all.add(product.source));
+      setSourceNames([...all]);
+      console.log("Products fetched:", [...all]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchAllSources = async () => {
+    try {
+      const response = await fetch("/api/sources");
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching sources:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllSources();
+  }, []);
 
   const addEmail = async () => {
     try {
       const response = await fetch("/api/sources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email, source: formData.name }),
+        body: JSON.stringify({
+          email: user?.email,
+          source: formData.name,
+          products: selectedProducts,
+        }),
       });
       const result = await response.json();
       if (result.success) {
-        console.log("Email added successfully");
+        console.log("Email and products added successfully");
+        fetchProducts();
         fetchAllSources();
       }
     } catch (error) {
-      console.error("Error adding email:", error);
+      console.error("Error adding email and products:", error);
     }
   };
 
@@ -99,27 +136,6 @@ const Page = () => {
       console.error("Error deleting email:", error);
     }
   };
-
-  const fetchAllSources = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/sources");
-      const result = await response.json();
-      if (result.success) {
-        setData(result.emails.filter((item) => item.email === user?.email));
-      }
-    } catch (error) {
-      console.error("Error fetching sources:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if(user){
-      fetchAllSources();
-    }
-  },[user]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -181,7 +197,7 @@ const Page = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {sourceNames.map((name) => (
+            {sourceNames?.map((name) => (
               <DropdownMenuItem
                 key={name}
                 onClick={() => setSelectedSource(name)}
@@ -201,6 +217,27 @@ const Page = () => {
           <div>
             <p>{row.getValue("email")}</p>
           </div>
+        );
+      },
+    },
+    {
+      accessorKey: "products",
+      header: "Products",
+      cell: ({ row }) => {
+        const rowProducts = row.original.products || [];
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost">
+                View Products <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {rowProducts.map((product, index) => (
+                <DropdownMenuItem key={index}>{product}</DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         );
       },
     },
@@ -313,15 +350,15 @@ const Page = () => {
 
             <div className="border bg-white shadow-2xl rounded-[0.75rem] overflow-hidden flex-1 h-full">
               <div className="h-full min-w-full flex flex-col">
-                <div className="overflow-x-auto overflow-y-hidden">
-                  <Table>
+                <div className="overflow-x-auto">
+                  <Table className="w-full">
                     <TableHeader>
                       {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                           {headerGroup.headers.map((header) => (
                             <TableHead
                               key={header.id}
-                              className="bg-blue-600 text-white sticky top-0 z-10"
+                              className="bg-blue-600 text-white sticky top-0 z-10 px-4 py-2 text-left"
                             >
                               {header.isPlaceholder
                                 ? null
@@ -334,20 +371,18 @@ const Page = () => {
                         </TableRow>
                       ))}
                     </TableHeader>
-                  </Table>
-                </div>
-                <div className="flex-grow overflow-y-scroll">
-                  <Table>
                     <TableBody>
-                      {table.getRowModel().rows &&
-                      table.getRowModel().rows.length ? (
+                      {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                           <TableRow
                             key={row.id}
                             data-state={row.getIsSelected() && "selected"}
                           >
                             {row.getVisibleCells().map((cell) => (
-                              <TableCell key={cell.id}>
+                              <TableCell
+                                key={cell.id}
+                                className="px-4 py-2 text-left"
+                              >
                                 {flexRender(
                                   cell.column.columnDef.cell,
                                   cell.getContext()
@@ -425,17 +460,52 @@ const Page = () => {
                       <DropdownMenuContent className="w-full">
                         <DropdownMenuLabel>Select a source</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        {sourceNames
-                          .filter((name) => name !== "All")
-                          .map((name) => (
-                            <DropdownMenuItem
-                              key={name}
-                              onClick={() => setFormData({ ...formData, name })}
-                            >
-                              {name}
-                            </DropdownMenuItem>
-                          ))}
+                        {products?.map((name) => (
+                          <DropdownMenuItem
+                            key={name.source}
+                            onClick={() =>
+                              setFormData({ ...formData, name: name.source })
+                            }
+                          >
+                            {name.source}
+                          </DropdownMenuItem>
+                        ))}
                         <DropdownMenuSeparator />
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Products
+                    </label>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-between"
+                        >
+                          Select Products
+                          <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-full">
+                        {products
+                          .find((p) => p.source === formData.name)
+                          ?.products.map((product, index) => (
+                            <DropdownMenuCheckboxItem
+                              key={index}
+                              checked={selectedProducts.includes(product)}
+                              onCheckedChange={(checked) => {
+                                setSelectedProducts((prev) =>
+                                  checked
+                                    ? [...prev, product]
+                                    : prev.filter((p) => p !== product)
+                                );
+                              }}
+                            >
+                              {product}
+                            </DropdownMenuCheckboxItem>
+                          ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

@@ -42,7 +42,5 @@ export async function GET(NextRequest) {
       { error: "Internal Server Error" },
       { status: 500 }
     );
-  } finally {
-    await client.close();
   }
 }
