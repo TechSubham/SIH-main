@@ -1,69 +1,56 @@
-"use client"
+import React from "react";
+import { Label, Pie, PieChart } from "recharts";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
-import { Label, Pie, PieChart } from "recharts"
+const colors = ["#F8333C", "#FCAB10", "#44AF69", "#1B98E0", "#E8F1F2", "#8B4513"];
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card"
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from "@/components/ui/chart"
+export default function VulnerabilityPieChart({ data }) {
+  const chartData = React.useMemo(() => {
+    if (!data || !data.totalVulnerabilities) return [];
+    return data.totalVulnerabilities.map((item, index) => ({
+      severity: item._id,
+      count: item.count,
+      fill: colors[index % colors.length]
+    }));
+  }, [data]);
 
-export const description = "A donut chart with text"
+  const totalVulnerabilities = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.count, 0);
+  }, [chartData]);
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "#F8333C" },
-  { browser: "safari", visitors: 200, fill: "#FCAB10" },
-  { browser: "firefox", visitors: 287, fill: "#44AF69" },
-  { browser: "edge", visitors: 173, fill: "#1B98E0" },
-  { browser: "other", visitors: 190, fill: "#E8F1F2" }
-]
+  const chartConfig = React.useMemo(() => {
+    return chartData.reduce((acc, item) => {
+      acc[item.severity] = {
+        label: item.severity,
+        color: item.fill
+      };
+      return acc;
+    }, {});
+  }, [chartData]);
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors"
-  },
-  chrome: {
-    label: "Chrome",
-    color: "#F8333C"
-  },
-  safari: {
-    label: "Safari",
-    color: "#FCAB10"
-  },
-  firefox: {
-    label: "Firefox",
-    color: "#44AF69"
-  },
-  edge: {
-    label: "Edge",
-    color: "#1B98E0"
-  },
-  other: {
-    label: "Other",
-    color: "#E8F1F2"
+  if (!data || !data.totalVulnerabilities) {
+    return (
+      <Card className="flex flex-col h-full">
+        <CardHeader className="items-center pb-0">
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-4 w-1/2 mt-2" />
+        </CardHeader>
+        <CardContent className="flex-1 pb-0">
+          <Skeleton className="h-[250px] w-[250px] rounded-full mx-auto" />
+        </CardContent>
+      </Card>
+    );
   }
-}
-
-export default function Component() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
 
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-xl font-semibold">Vulnerability Analytics</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle className="text-xl font-semibold">
+          Vulnerability Analytics
+        </CardTitle>
+        <CardDescription>Total Vulnerabilities by Severity</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -73,12 +60,12 @@ export default function Component() {
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent />}
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="count"
+              nameKey="severity"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -97,17 +84,17 @@ export default function Component() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalVulnerabilities.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Detected
+                          Total
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -116,5 +103,5 @@ export default function Component() {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }
