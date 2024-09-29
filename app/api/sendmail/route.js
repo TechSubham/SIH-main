@@ -14,36 +14,39 @@ const client = new MongoClient(uri);
 export async function POST(request) {
   try {
     const data = await request.json();
-
+    
     await client.connect();
     const database = client.db("arvrs");
     const sourcesCollection = database.collection("sources");
-
+    
     const sourceDoc = await sourcesCollection.findOne({
-      name: data.description,
+      name: data.description
     });
-
+    
     if (!sourceDoc) {
       return NextResponse.json(
         { message: `No source found for description: ${data.description}` },
         { status: 404 }
       );
     }
-
-    const filteredEmails = sourceDoc.emails;
-
+    
+    const affectedEmails = sourceDoc.emails.filter(emailObj => 
+      data.products.some(product => emailObj.products.includes(product))
+    );
+    
     const sentFrom = new Sender("support@teamqubit.in", "Support");
-
-    filteredEmails.forEach(async (recipient) => {
-      let toE = [ new Recipient(recipient)]
+    
+    for (const emailObj of affectedEmails) {
+      const toE = [new Recipient(emailObj.email)];
       console.log(toE);
+      
       const emailParams = new EmailParams()
         .setFrom(sentFrom)
         .setTo(toE)
         .setTemplateId("o65qngk6pxw4wr12")
         .setPersonalization([
           {
-            email: recipient, // This email won't be used for sending
+            email: emailObj.email,
             data: {
               source: data.description,
               vulnerability: [
@@ -51,17 +54,20 @@ export async function POST(request) {
                   id: data["cve_id"],
                   source: data.description,
                   severity: data.severity,
+                  affectedProducts: emailObj.products.filter(product => 
+                    data.products.includes(product)
+                  )
                 },
               ],
             },
           },
         ]);
-
+      
       await mailerSend.email.send(emailParams);
-    });
-
+    }
+    
     return NextResponse.json(
-      { message: "Email sent successfully" },
+      { message: "Emails sent successfully" },
       { status: 200 }
     );
   } catch (error) {
